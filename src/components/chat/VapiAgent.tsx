@@ -41,7 +41,15 @@ export default function VapiAgent() {
 
   async function startCall() {
     if (!publicKey || !assistantId) {
-      setError("Vapi keys not configured. Add them to your .env.local file.");
+      setError("Vapi keys not configured.");
+      return;
+    }
+
+    // Request mic permission first
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch {
+      setError("Microphone access denied. Please allow mic and try again.");
       return;
     }
 
@@ -73,7 +81,8 @@ export default function VapiAgent() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vapi.on("error", (e: any) => {
         console.error("Vapi error:", e);
-        setError("Call failed. Please try again.");
+        const msg = e?.message || e?.error?.message || "Call failed. Please try again.";
+        setError(msg);
         setStatus("idle");
         stopTimer();
       });
@@ -105,7 +114,12 @@ export default function VapiAgent() {
   // ── Idle state — just the call button ────────────────────────────────────
   if (status === "idle") {
     return (
-      <div className="fixed bottom-28 right-24 z-50 flex flex-col items-center gap-1">
+      <div className="fixed bottom-6 right-[5.5rem] z-50 flex flex-col items-center gap-1">
+        {error && (
+          <p className="absolute bottom-full mb-2 w-56 text-[11px] text-red-400 bg-[var(--surface)] border border-red-500/30 rounded-xl px-3 py-2 text-center shadow-lg">
+            {error}
+          </p>
+        )}
         <button
           onClick={startCall}
           title="Talk to AI Agent"
@@ -114,19 +128,13 @@ export default function VapiAgent() {
         >
           <Phone size={22} className="text-white" />
         </button>
-        <span className="text-[10px] text-white/50 font-medium">Call AI</span>
-        {error && (
-          <p className="absolute bottom-full mb-2 w-56 text-[11px] text-red-400 bg-[var(--surface)] border border-red-500/30 rounded-xl px-3 py-2 text-center shadow-lg">
-            {error}
-          </p>
-        )}
       </div>
     );
   }
 
   // ── Active / connecting / ended — full call screen ────────────────────────
   return (
-    <div className="fixed bottom-24 right-6 z-50 w-72 rounded-3xl shadow-2xl border border-[var(--border)] overflow-hidden flex flex-col"
+    <div className="fixed bottom-24 right-[5.5rem] z-50 w-72 rounded-3xl shadow-2xl border border-[var(--border)] overflow-hidden flex flex-col"
       style={{ background: "var(--surface)" }}>
 
       {/* Header */}
