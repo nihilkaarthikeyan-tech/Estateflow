@@ -52,9 +52,10 @@ export default function SubmitLeadPage() {
       }),
     });
 
-    const data = await res.json();
-    if (data.error) {
-      setError(data.error);
+    let data: Record<string, unknown> = {};
+    try { data = await res.json(); } catch { /* n8n may return empty body */ }
+    if (!res.ok && data.error) {
+      setError(String(data.error));
     } else {
       setSuccess(true);
     }
