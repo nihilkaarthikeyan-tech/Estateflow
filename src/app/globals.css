@@ -279,6 +279,75 @@ textarea:-webkit-autofill:focus {
   animation: shimmer 1.4s ease infinite;
 }
 
+/* ─── Ticker / marquee ─────────────────────────────────────── */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker 35s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+
+/* ─── Perspective hero mockup ───────────────────────────────── */
+.hero-mockup {
+  transform: perspective(1200px) rotateX(6deg) scale(0.97);
+  transform-origin: top center;
+  transition: transform 0.6s ease;
+}
+.hero-mockup:hover {
+  transform: perspective(1200px) rotateX(2deg) scale(0.99);
+}
+
+/* ─── Glass morphism ────────────────────────────────────────── */
+.glass-card {
+  background: rgba(9, 13, 26, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+
+/* ─── Gradient animated border ─────────────────────────────── */
+@keyframes gradient-rotate {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-border {
+  position: relative;
+  background: var(--surface);
+  border-radius: 1.25rem;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(91,110,245,0.7), rgba(34,211,238,0.5), rgba(168,85,247,0.6));
+  background-size: 200% 200%;
+  animation: gradient-rotate 3s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+.gradient-border:hover::before { opacity: 1; }
+
+/* ─── Float animation for notification cards ─────────────────── */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ─── Premium background animations ────────────────────────── */
 
 @keyframes orb-float {
