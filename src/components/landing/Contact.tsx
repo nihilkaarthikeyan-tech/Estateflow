@@ -37,7 +37,8 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
             <Link
               href="/signup"
-              className="glow-border w-full sm:w-auto inline-flex items-center justify-center gap-2 font-bold rounded-2xl text-base px-9 py-4 bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] active:scale-[0.98] transition-all shadow-[0_0_32px_var(--accent-glow)] hover:shadow-[0_0_48px_var(--accent-glow)]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-bold rounded-2xl text-base px-9 py-4 text-[#07070f] active:scale-[0.98] transition-all"
+              style={{ background: "linear-gradient(135deg, #fcd34d, #f59e0b)", boxShadow: "0 0 40px rgba(245,158,11,0.4)" }}
             >
               <Zap size={16} />
               Start free trial

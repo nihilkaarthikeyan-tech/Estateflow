@@ -246,9 +246,9 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Floating notification cards */}
+        {/* Floating notification cards — GSAP parallax targets */}
         <div
-          className="absolute top-16 -left-4 hidden lg:block"
+          className="float-card-left absolute top-16 -left-4 hidden lg:block"
           style={{ animation: "slide-in-left 0.8s ease 1s both" }}
         >
           <div className="glass-card rounded-2xl px-4 py-3 shadow-2xl flex items-center gap-3 w-56">
@@ -263,7 +263,7 @@ export default function Hero() {
         </div>
 
         <div
-          className="absolute top-16 -right-4 hidden lg:block"
+          className="float-card-right absolute top-16 -right-4 hidden lg:block"
           style={{ animation: "slide-in-right 0.8s ease 1.2s both" }}
         >
           <div className="glass-card rounded-2xl px-4 py-3 shadow-2xl flex items-center gap-3 w-52">

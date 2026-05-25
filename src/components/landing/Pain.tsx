@@ -45,7 +45,7 @@ export default function Pain() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="cinematic-reveal text-center mb-14"
         >
           <p className="section-label mb-4">The real problem</p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight text-[var(--foreground)]">
@@ -65,7 +65,7 @@ export default function Pain() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="gradient-border p-6 flex flex-col gap-4"
+              className="pain-card gradient-border p-6 flex flex-col gap-4"
             >
               {/* Icon */}
               <div
