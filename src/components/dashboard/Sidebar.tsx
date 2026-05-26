@@ -13,6 +13,7 @@ import {
   X,
   UserSquare2,
   Wrench,
+  CalendarCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth/provider";
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Leads", href: "/dashboard/leads", icon: Users, exact: false },
   { label: "Tenants", href: "/dashboard/tenants", icon: UserSquare2, exact: false },
   { label: "Maintenance", href: "/dashboard/maintenance", icon: Wrench, exact: false },
+  { label: "Visits", href: "/dashboard/visits", icon: CalendarCheck, exact: false },
   { label: "Analytics", href: "/dashboard/analytics", icon: BarChart3, exact: false },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, exact: false },
 ];

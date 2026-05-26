@@ -286,3 +286,40 @@ create index if not exists idx_leads_urgency on public.leads(urgency);
 create index if not exists idx_leads_assigned on public.leads(assigned_to);
 create index if not exists idx_conversations_lead on public.conversations(lead_id);
 create index if not exists idx_notifications_user on public.notifications(user_id);
+
+-- ─────────────────────────────────────────────
+-- TABLE: visits
+-- Site visit scheduling
+-- ─────────────────────────────────────────────
+create table if not exists public.visits (
+  id               uuid primary key default uuid_generate_v4(),
+  organization_id  uuid not null references public.organizations(id) on delete cascade,
+  property_id      uuid references public.properties(id) on delete set null,
+  lead_id          uuid references public.leads(id) on delete set null,
+  visitor_name     text not null,
+  visitor_phone    text not null,
+  visitor_email    text,
+  visit_date       date not null,
+  visit_time       text not null default '10:00',
+  status           text not null default 'scheduled'
+                   check (status in ('scheduled', 'completed', 'cancelled', 'no_show')),
+  notes            text,
+  created_at       timestamp with time zone default now()
+);
+
+alter table public.visits enable row level security;
+
+create policy "org_visits_select" on public.visits for select
+  using (organization_id = (select organization_id from public.profiles where id = auth.uid()));
+
+create policy "org_visits_insert" on public.visits for insert
+  with check (organization_id = (select organization_id from public.profiles where id = auth.uid()));
+
+create policy "org_visits_update" on public.visits for update
+  using (organization_id = (select organization_id from public.profiles where id = auth.uid()));
+
+create policy "org_visits_delete" on public.visits for delete
+  using (organization_id = (select organization_id from public.profiles where id = auth.uid()));
+
+create index if not exists idx_visits_org on public.visits(organization_id);
+create index if not exists idx_visits_date on public.visits(visit_date);
