@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, Phone, Mail, Home, User, Plus, Pencil, Trash2, Loader2,
-  Wrench, Users, CheckCircle2, Clock, XCircle, FileText, Calendar,
-  AlertTriangle, ChevronRight
+  Wrench, Users, CheckCircle2, XCircle, FileText, Calendar,
+  AlertTriangle, Upload, Download, File,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import TopBar from "@/components/dashboard/TopBar";
@@ -63,6 +63,12 @@ export default function TenantDetailPage() {
   const [deleteLeaseTarget, setDeleteLeaseTarget] = useState<Lease | null>(null);
   const [deleteLeaseLoading, setDeleteLeaseLoading] = useState(false);
 
+  // Lease documents
+  const [docs, setDocs] = useState<{ name: string; path: string; created_at: string }[]>([]);
+  const [docsLoading, setDocsLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
   const [ticketFormOpen, setTicketFormOpen] = useState(false);
   const [editTicket, setEditTicket] = useState<MaintenanceTicket | null>(null);
   const [deleteTicketTarget, setDeleteTicketTarget] = useState<MaintenanceTicket | null>(null);
@@ -77,6 +83,48 @@ export default function TenantDetailPage() {
     createClient().from("properties").select("id, title")
       .then(({ data }) => setProperties((data ?? []) as { id: string; title: string }[]));
   }, []);
+
+  async function fetchDocs() {
+    setDocsLoading(true);
+    const supabase = createClient();
+    const { data } = await supabase.storage.from("lease").list(id, { sortBy: { column: "created_at", order: "desc" } });
+    setDocs((data ?? []).map((f) => ({ name: f.name, path: `${id}/${f.name}`, created_at: f.created_at ?? "" })));
+    setDocsLoading(false);
+  }
+
+  useEffect(() => { if (tab === "lease") fetchDocs(); }, [tab, id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { setUploadError("Max file size is 10 MB."); return; }
+    setUploading(true);
+    setUploadError("");
+    const supabase = createClient();
+    const filename = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+    const { error } = await supabase.storage.from("lease").upload(`${id}/${filename}`, file);
+    setUploading(false);
+    if (error) { setUploadError(error.message); return; }
+    fetchDocs();
+    e.target.value = "";
+  }
+
+  async function handleDownload(path: string, name: string) {
+    const supabase = createClient();
+    const { data } = await supabase.storage.from("lease").createSignedUrl(path, 60);
+    if (data?.signedUrl) {
+      const a = document.createElement("a");
+      a.href = data.signedUrl;
+      a.download = name;
+      a.click();
+    }
+  }
+
+  async function handleDeleteDoc(path: string) {
+    const supabase = createClient();
+    await supabase.storage.from("lease").remove([path]);
+    setDocs((d) => d.filter((x) => x.path !== path));
+  }
 
   const tenant = tenants.find((t) => t.id === id);
 
@@ -280,6 +328,67 @@ export default function TenantDetailPage() {
                         </div>
                       );
                     })}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Lease Documents */}
+            {tab === "lease" && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <FileText size={15} className="text-[var(--accent)]" />
+                    <h3 className="text-sm font-semibold text-[var(--foreground)]">Lease Documents</h3>
+                    <span className="text-xs text-[var(--foreground-subtle)]">PDF, DOC up to 10 MB</span>
+                  </div>
+                  <label className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${uploading ? "opacity-50 pointer-events-none" : ""}`}
+                    style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-2))", color: "white" }}>
+                    {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                    {uploading ? "Uploading…" : "Upload"}
+                    <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" className="hidden" onChange={handleUpload} disabled={uploading} />
+                  </label>
+                </div>
+
+                {uploadError && (
+                  <p className="text-xs text-[var(--danger)] bg-[var(--danger)]/10 px-3 py-2 rounded-lg mb-3">{uploadError}</p>
+                )}
+
+                {docsLoading ? (
+                  <div className="flex justify-center py-6"><Loader2 size={18} className="animate-spin text-[var(--accent)]" /></div>
+                ) : docs.length === 0 ? (
+                  <div className="text-center py-8 border-2 border-dashed border-[var(--border)] rounded-xl">
+                    <File size={28} className="text-[var(--foreground-subtle)] mx-auto mb-2" />
+                    <p className="text-sm text-[var(--foreground-muted)]">No documents uploaded yet</p>
+                    <p className="text-xs text-[var(--foreground-subtle)] mt-1">Upload lease agreement, ID proof, NOC etc.</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {docs.map((doc) => (
+                      <div key={doc.path} className="flex items-center gap-3 px-3 py-2.5 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl group hover:border-[var(--accent)]/40 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-[var(--accent-muted)] flex items-center justify-center shrink-0">
+                          <FileText size={14} className="text-[var(--accent)]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-[var(--foreground)] truncate">{doc.name.replace(/^\d+_/, "")}</p>
+                          {doc.created_at && (
+                            <p className="text-xs text-[var(--foreground-subtle)]">
+                              {new Date(doc.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => handleDownload(doc.path, doc.name.replace(/^\d+_/, ""))}
+                            className="p-1.5 rounded-lg text-[var(--accent)] hover:bg-[var(--accent-muted)] transition-colors" title="Download">
+                            <Download size={14} />
+                          </button>
+                          <button onClick={() => handleDeleteDoc(doc.path)}
+                            className="p-1.5 rounded-lg text-[var(--danger)] hover:bg-[var(--danger)]/10 transition-colors" title="Delete">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </motion.div>
