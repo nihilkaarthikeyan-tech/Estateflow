@@ -24,7 +24,7 @@ export default function Footer() {
       <div className="max-w-[1400px] mx-auto relative z-10">
 
         {/* Elyse-style footer — 3 columns with parenthesized labels */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
 
           {/* Brand — big serif name like Elyse */}
           <div className="sm:col-span-1">
@@ -40,7 +40,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links */}
+          {/* Platform Links */}
           <div>
             <p className="section-label mb-6">(Platform)</p>
             <ul className="space-y-3">
@@ -50,6 +50,27 @@ export default function Footer() {
                 { label: "Voice AI Agent",   href: "#features" },
                 { label: "Analytics",        href: "#features" },
                 { label: "How it Works",     href: "#workflow" },
+              ].map(link => (
+                <li key={link.label}>
+                  <Link href={link.href}
+                    className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Portal Links */}
+          <div>
+            <p className="section-label mb-6">(Portals)</p>
+            <ul className="space-y-3">
+              {[
+                { label: "Property Listings",  href: "/listings" },
+                { label: "Submit Requirement", href: "/submit-lead" },
+                { label: "Book a Site Visit",  href: "/book-visit" },
+                { label: "Tenant Portal",      href: "/tenant-portal" },
+                { label: "Agent Login",        href: "/login" },
               ].map(link => (
                 <li key={link.label}>
                   <Link href={link.href}

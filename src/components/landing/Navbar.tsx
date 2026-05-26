@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Features",     href: "#features" },
   { label: "How it Works", href: "#workflow" },
   { label: "Results",      href: "#testimonials" },
+  { label: "Listings",     href: "/listings" },
   { label: "FAQ",          href: "#faq" },
 ];
 
@@ -55,9 +56,13 @@ export default function Navbar() {
 
         {/* CTA — oval pill like Elyse */}
         <div className="hidden md:flex items-center gap-4">
+          <Link href="/tenant-portal"
+            className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-subtle)] hover:text-[var(--foreground-muted)] transition-colors">
+            Tenant Portal
+          </Link>
           <Link href="/login"
             className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
-            Sign in
+            Agent Login
           </Link>
           <Link href="/signup" className="btn-oval">
             Get Demo
@@ -87,9 +92,13 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-4 border-t border-[rgba(255,255,255,0.07)] flex flex-col gap-3">
+                <Link href="/tenant-portal" onClick={() => setMobileOpen(false)}
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-subtle)] text-center py-2">
+                  Tenant Portal
+                </Link>
                 <Link href="/login" onClick={() => setMobileOpen(false)}
                   className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] text-center py-2">
-                  Sign in
+                  Agent Login
                 </Link>
                 <Link href="/signup" onClick={() => setMobileOpen(false)} className="btn-oval text-center">
                   Get Demo

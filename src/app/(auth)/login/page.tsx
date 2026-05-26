@@ -130,6 +130,23 @@ export default function LoginPage() {
       <p className="text-center text-xs text-[var(--foreground-subtle)]">
         Protected by Supabase Auth · 256-bit encryption
       </p>
+
+      <div className="mt-6 pt-5 border-t border-[var(--border)] text-center">
+        <p className="text-xs text-[var(--foreground-subtle)] mb-2">Not an agent?</p>
+        <div className="flex items-center justify-center gap-4 text-xs">
+          <Link href="/tenant-portal" className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-medium transition-colors">
+            Tenant Portal →
+          </Link>
+          <span className="text-[var(--border-strong)]">|</span>
+          <Link href="/listings" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+            View Listings
+          </Link>
+          <span className="text-[var(--border-strong)]">|</span>
+          <Link href="/book-visit" className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+            Book a Visit
+          </Link>
+        </div>
+      </div>
     </motion.div>
   );
 }
