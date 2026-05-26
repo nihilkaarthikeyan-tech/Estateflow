@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+// Free Unsplash images
+const INTERIOR_IMG = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80";
 
 const pains = [
   {
@@ -68,47 +72,73 @@ export default function Pain() {
           </motion.p>
         </div>
 
-        {/* Editorial grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[rgba(255,255,255,0.06)]">
-          {pains.map((p, i) => (
-            <motion.div
-              key={p.num}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6, ease }}
-              className="bg-[var(--background)] hover:bg-[var(--surface)] transition-colors duration-300 p-8 sm:p-10 flex flex-col gap-6"
-            >
-              {/* Number */}
-              <span className="font-serif italic text-5xl text-[rgba(255,255,255,0.08)]"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic", fontWeight: 400 }}>
-                ({p.num})
-              </span>
+        {/* 2-column layout: image left, cards right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[rgba(255,255,255,0.06)]">
 
-              {/* Title */}
-              <h3 className="font-serif text-xl font-bold text-[var(--foreground)] leading-snug"
+          {/* Property image — tall, editorial */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative min-h-[400px] lg:min-h-[600px] overflow-hidden"
+          >
+            <Image
+              src={INTERIOR_IMG}
+              alt="Luxury interior"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-[rgba(13,15,14,0.4)]" />
+            {/* Corner label */}
+            <div className="absolute bottom-6 left-6">
+              <p className="section-label text-white/60">(The Status Quo)</p>
+              <p className="font-serif italic text-white/80 text-lg mt-1"
                 style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                {p.title}{" "}
-                <em className="font-normal text-[var(--foreground-muted)]" style={{ fontStyle: "italic" }}>
-                  {p.titleItalic}
-                </em>
-              </h3>
-
-              {/* Body */}
-              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed flex-1">
-                {p.body}
+                Beautiful property.<br />Lost because of process.
               </p>
+            </div>
+          </motion.div>
 
-              {/* Stat */}
-              <div className="pt-4 border-t border-[rgba(255,255,255,0.07)]">
-                <p className="font-serif text-3xl font-bold text-[#f87171]"
+          {/* Pain cards stacked */}
+          <div className="flex flex-col">
+            {pains.map((p, i) => (
+              <motion.div
+                key={p.num}
+                initial={{ opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease }}
+                className={`bg-[var(--background)] hover:bg-[var(--surface)] transition-colors duration-300 p-8 sm:p-10 flex flex-col gap-4
+                  ${i < 2 ? "border-b border-[rgba(255,255,255,0.06)]" : ""}`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-serif italic text-4xl text-[rgba(255,255,255,0.08)]"
+                    style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic" }}>
+                    ({p.num})
+                  </span>
+                  <div className="text-right">
+                    <p className="font-serif text-3xl font-bold text-[#f87171]"
+                      style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                      {p.stat}
+                    </p>
+                    <p className="text-[10px] text-[var(--foreground-subtle)] mt-0.5 max-w-[140px] text-right leading-snug">{p.statLabel}</p>
+                  </div>
+                </div>
+
+                <h3 className="font-serif text-lg font-bold text-[var(--foreground)] leading-snug"
                   style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                  {p.stat}
-                </p>
-                <p className="text-[11px] text-[var(--foreground-subtle)] mt-1 leading-snug">{p.statLabel}</p>
-              </div>
-            </motion.div>
-          ))}
+                  {p.title}{" "}
+                  <em className="font-normal text-[var(--foreground-muted)]" style={{ fontStyle: "italic" }}>
+                    {p.titleItalic}
+                  </em>
+                </h3>
+                <p className="text-sm text-[var(--foreground-muted)] leading-relaxed">{p.body}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Bridge */}
