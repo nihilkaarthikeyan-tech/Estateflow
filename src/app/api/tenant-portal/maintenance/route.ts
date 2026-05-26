@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const { data: tenant } = await supabase
       .from("tenants")
-      .select("organization_id, property_id")
+      .select("property_id")
       .eq("id", tenant_id)
       .single();
 
@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
     const { data, error } = await supabase
       .from("maintenance_tickets")
       .insert({
-        organization_id: tenant.organization_id,
         tenant_id,
         property_id: tenant.property_id ?? null,
         title,
@@ -36,20 +35,14 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    // Notify admins
-    const { data: admins } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("organization_id", tenant.organization_id)
-      .eq("role", "admin");
-
-    if (admins && admins.length > 0) {
+    // Notify all users (single-user system)
+    const { data: users } = await supabase.from("profiles").select("id");
+    if (users && users.length > 0) {
       await supabase.from("notifications").insert(
-        admins.map((a) => ({
-          user_id: a.id,
-          organization_id: tenant.organization_id,
+        users.map((u) => ({
+          user_id: u.id,
           message: `New maintenance request from tenant: "${title}"`,
-          type: "maintenance",
+          type: "info",
           link: `/dashboard/maintenance`,
           read: false,
         }))

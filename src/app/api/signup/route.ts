@@ -8,38 +8,16 @@ const supabaseAdmin = createClient(
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, agencyName, city, fullName } = await req.json();
+    const { userId, fullName } = await req.json();
+    if (!userId) return NextResponse.json({ error: "Missing userId" }, { status: 400 });
 
-    if (!userId || !agencyName) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    // Insert org using service role (bypasses RLS)
-    const { data: org, error: orgError } = await supabaseAdmin
-      .from("organizations")
-      .insert({ name: agencyName, city: city ?? "" })
-      .select()
-      .single();
-
-    if (orgError) {
-      return NextResponse.json({ error: orgError.message }, { status: 500 });
-    }
-
-    // Insert or update profile using service role (bypasses RLS)
     const { error: profileError } = await supabaseAdmin
       .from("profiles")
-      .upsert({
-        id: userId,
-        organization_id: org.id,
-        role: "admin",
-        full_name: fullName
-      });
+      .upsert({ id: userId, full_name: fullName ?? null });
 
-    if (profileError) {
-      return NextResponse.json({ error: profileError.message }, { status: 500 });
-    }
+    if (profileError) return NextResponse.json({ error: profileError.message }, { status: 500 });
 
-    return NextResponse.json({ organizationId: org.id });
+    return NextResponse.json({ success: true });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });

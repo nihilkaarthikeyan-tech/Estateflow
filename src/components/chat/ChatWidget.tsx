@@ -20,14 +20,10 @@ interface Message {
   action?: string;
 }
 
-interface Props {
-  orgId?: string;
-}
-
 const WELCOME =
   "Hi! I'm the EstateFlow AI assistant. Ask me about properties, pricing, or book a site visit. You can also click the mic and speak!";
 
-export default function ChatWidget({ orgId }: Props) {
+export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: WELCOME },
@@ -52,8 +48,6 @@ export default function ChatWidget({ orgId }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const resolvedOrgId = orgId ?? process.env.NEXT_PUBLIC_ORG_ID ?? undefined;
 
   const speechSupported =
     typeof window !== "undefined" &&
@@ -151,7 +145,6 @@ export default function ChatWidget({ orgId }: Props) {
         body: JSON.stringify({
           message: text,
           conversationHistory: messages.map((m) => ({ role: m.role, content: m.content })),
-          organizationId: resolvedOrgId,
         }),
       });
       const data = await res.json();
@@ -206,7 +199,6 @@ export default function ChatWidget({ orgId }: Props) {
           name: leadName.trim(),
           phone: leadPhone.trim(),
           conversationSummary,
-          organizationId: resolvedOrgId,
         }),
       });
       setLeadSaved(true);

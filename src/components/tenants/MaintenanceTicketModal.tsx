@@ -11,7 +11,7 @@ import type { MaintenanceTicket, TicketCategory, TicketPriority } from "@/types"
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<MaintenanceTicket, "id" | "created_at" | "organization_id" | "updated_at">) => Promise<{ error?: string }>;
+  onSubmit: (data: Omit<MaintenanceTicket, "id" | "created_at" | "updated_at">) => Promise<{ error?: string }>;
   initial?: MaintenanceTicket | null;
   tenantId?: string;
   propertyId?: string;

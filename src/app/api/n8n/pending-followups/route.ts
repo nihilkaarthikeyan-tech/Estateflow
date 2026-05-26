@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     // Get leads in this stage that have no outbound conversation since cutoff
     const { data: leads } = await supabase
       .from("leads")
-      .select("id, name, phone, budget, location, property_type, urgency, summary, status, organization_id")
+      .select("id, name, phone, budget, location, property_type, urgency, summary, status")
       .eq("status", stage)
       .not("phone", "is", null)
       .lt("created_at", cutoff.toISOString());

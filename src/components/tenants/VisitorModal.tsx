@@ -10,7 +10,7 @@ import type { Visitor } from "@/types";
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Visitor, "id" | "created_at" | "organization_id">) => Promise<{ error?: string }>;
+  onSubmit: (data: Omit<Visitor, "id" | "created_at">) => Promise<{ error?: string }>;
   initial?: Visitor | null;
   tenantId?: string;
 }

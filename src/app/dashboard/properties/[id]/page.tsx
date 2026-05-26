@@ -58,7 +58,7 @@ export default function PropertyDetailPage() {
     load();
   }, [id]);
 
-  async function handleUpdate(payload: Omit<Property, "id" | "created_at" | "organization_id">) {
+  async function handleUpdate(payload: Omit<Property, "id" | "created_at">) {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("properties")

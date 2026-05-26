@@ -12,7 +12,7 @@ import type { Property, PropertyStatus } from "@/types";
 interface PropertyFormModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Property, "id" | "created_at" | "organization_id">) => Promise<{ error?: string }>;
+  onSubmit: (data: Omit<Property, "id" | "created_at">) => Promise<{ error?: string }>;
   initial?: Property | null;
 }
 

@@ -219,7 +219,7 @@ export default function LeadDetailPage() {
     setTimeout(() => setVisitSaved(false), 2500);
   }
 
-  async function handleUpdate(payload: Omit<Lead, "id" | "created_at" | "organization_id" | "ai_analyzed">) {
+  async function handleUpdate(payload: Omit<Lead, "id" | "created_at" | "ai_analyzed">) {
     const supabase = createClient();
     const { data, error } = await supabase.from("leads").update(payload).eq("id", id).select().single();
     if (!error) setLead(data as Lead);

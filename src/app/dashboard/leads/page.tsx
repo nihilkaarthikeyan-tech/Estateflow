@@ -83,7 +83,7 @@ export default function LeadsPage() {
   function openAdd() { setEditTarget(null); setFormOpen(true); }
   function openEdit(l: Lead) { setEditTarget(l); setFormOpen(true); }
 
-  async function handleFormSubmit(data: Omit<Lead, "id" | "created_at" | "organization_id" | "ai_analyzed">) {
+  async function handleFormSubmit(data: Omit<Lead, "id" | "created_at" | "ai_analyzed">) {
     if (editTarget) return await updateLead(editTarget.id, data);
     return await addLead(data);
   }

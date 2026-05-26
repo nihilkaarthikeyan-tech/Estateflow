@@ -60,7 +60,7 @@ export default function TenantsPage() {
   }
 
   // Enhanced addTenant wrapper to catch profile errors
-  async function handleAddTenant(data: Omit<Tenant, "id" | "created_at" | "organization_id">) {
+  async function handleAddTenant(data: Omit<Tenant, "id" | "created_at">) {
     const result = await addTenant(data);
     if (result.error === "Profile not found") {
       setProfileError(true);

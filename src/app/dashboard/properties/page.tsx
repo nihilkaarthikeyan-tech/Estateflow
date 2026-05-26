@@ -52,7 +52,7 @@ export default function PropertiesPage() {
   function openAdd() { setEditTarget(null); setFormOpen(true); }
   function openEdit(p: Property) { setEditTarget(p); setFormOpen(true); setMenuOpen(null); }
 
-  async function handleFormSubmit(data: Omit<Property, "id" | "created_at" | "organization_id">) {
+  async function handleFormSubmit(data: Omit<Property, "id" | "created_at">) {
     if (editTarget) {
       return await updateProperty(editTarget.id, data);
     }

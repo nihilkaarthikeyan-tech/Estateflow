@@ -8,7 +8,7 @@ import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import type { Lead, LeadStage, LeadUrgency, BuyerIntent } from "@/types";
 
-type LeadPayload = Omit<Lead, "id" | "created_at" | "organization_id" | "ai_analyzed">;
+type LeadPayload = Omit<Lead, "id" | "created_at" | "ai_analyzed">;
 
 interface LeadFormModalProps {
   open: boolean;

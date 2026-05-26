@@ -11,7 +11,7 @@ import type { Lease } from "@/types";
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Lease, "id" | "created_at" | "organization_id">) => Promise<{ error?: string }>;
+  onSubmit: (data: Omit<Lease, "id" | "created_at">) => Promise<{ error?: string }>;
   initial?: Lease | null;
   tenantId?: string;
   propertyId?: string;

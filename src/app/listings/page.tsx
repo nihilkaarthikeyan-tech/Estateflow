@@ -203,7 +203,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
         )}
       </main>
 
-      <ChatWidget orgId={process.env.NEXT_PUBLIC_ORG_ID} />
+      <ChatWidget />
 
       {/* Footer CTA */}
       <footer className="border-t border-[var(--border)] mt-16 py-10 bg-[var(--surface)]">

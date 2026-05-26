@@ -11,7 +11,7 @@ import type { Tenant, TenantStatus } from "@/types";
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Tenant, "id" | "created_at" | "organization_id">) => Promise<{ error?: string }>;
+  onSubmit: (data: Omit<Tenant, "id" | "created_at">) => Promise<{ error?: string }>;
   initial?: Tenant | null;
   properties?: { id: string; title: string }[];
 }
