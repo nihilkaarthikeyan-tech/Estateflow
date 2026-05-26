@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { X, CheckCircle2, MessageCircle, Brain, Bell, Calendar, TrendingUp } from "lucide-react";
+
+const DAYINLIFE_BG = "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1920&q=80";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -96,6 +99,17 @@ const timeline = [
 export default function DayInLife() {
   return (
     <section className="landing-section px-4 sm:px-6 relative overflow-hidden">
+      {/* Property background image */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <Image
+          src={DAYINLIFE_BG}
+          alt=""
+          fill
+          className="object-cover object-center opacity-[0.04]"
+          sizes="100vw"
+          aria-hidden
+        />
+      </div>
       {/* Warm gold ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(201,169,110,0.05)_0%,transparent_70%)] pointer-events-none" />
 
@@ -188,14 +202,26 @@ export default function DayInLife() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-12 p-6 sm:p-8 rounded-3xl border relative overflow-hidden"
+          className="mt-12 rounded-3xl border relative overflow-hidden"
           style={{
             background: "linear-gradient(135deg, rgba(201,169,110,0.08) 0%, rgba(22,163,74,0.05) 100%)",
             borderColor: "rgba(201,169,110,0.24)",
           }}
         >
+          {/* Property image — right third, visible on sm+ */}
+          <div className="hidden sm:block absolute inset-y-0 right-0 w-[38%] overflow-hidden">
+            <Image
+              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
+              alt=""
+              fill
+              className="object-cover object-center opacity-20"
+              sizes="38vw"
+              aria-hidden
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)] via-transparent to-transparent" />
+          </div>
           <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(ellipse,rgba(201,169,110,0.1)_0%,transparent_70%)] pointer-events-none" />
-          <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+          <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-6 items-center p-6 sm:p-8">
             <div className="sm:col-span-2">
               <p className="text-lg sm:text-2xl font-bold text-[var(--foreground)] mb-2">
                 The difference isn&apos;t talent. It&apos;s the system.

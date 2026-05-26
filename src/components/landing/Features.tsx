@@ -67,7 +67,7 @@ export default function Features() {
           src={FEATURES_BG}
           alt=""
           fill
-          className="object-cover object-center opacity-[0.04]"
+          className="object-cover object-center opacity-[0.08]"
           sizes="100vw"
           aria-hidden
         />

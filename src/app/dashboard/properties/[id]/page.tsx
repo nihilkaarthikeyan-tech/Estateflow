@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft, Bed, Bath, Maximize2, MapPin, Pencil,
+  ArrowLeft, Bed, Bath, Maximize2, MapPin, Pencil, Home,
   Trash2, ChevronLeft, ChevronRight, CheckCircle2, Loader2, Video,
 } from "lucide-react";
 import Link from "next/link";
@@ -165,8 +165,25 @@ export default function PropertyDetailPage() {
                   )}
                 </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-[var(--foreground-subtle)]">
-                  No images uploaded
+                <div className="w-full h-full relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+                    alt="Property placeholder"
+                    className="w-full h-full object-cover opacity-25"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                    <div className="p-3 rounded-2xl bg-black/50 backdrop-blur-sm border border-white/10">
+                      <Home size={28} className="text-white/50" />
+                    </div>
+                    <p className="text-sm font-medium text-white/50">No images uploaded</p>
+                    <button
+                      onClick={() => setEditOpen(true)}
+                      className="text-xs text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+                    >
+                      Add photos →
+                    </button>
+                  </div>
                 </div>
               )}
             </motion.div>

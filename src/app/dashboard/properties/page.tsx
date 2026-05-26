@@ -136,8 +136,16 @@ export default function PropertiesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center justify-center gap-4 py-24 text-center"
           >
-            <div className="p-4 bg-[var(--surface-2)] rounded-2xl">
-              <Home size={32} className="text-[var(--foreground-subtle)]" />
+            <div className="relative w-24 h-24 rounded-2xl overflow-hidden border border-[var(--border)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=300&q=80"
+                alt=""
+                className="w-full h-full object-cover opacity-30"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Home size={28} className="text-[var(--foreground-subtle)]" />
+              </div>
             </div>
             <div>
               <p className="text-sm font-medium text-[var(--foreground)]">No properties found</p>
@@ -177,9 +185,20 @@ export default function PropertiesPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Home size={32} className="text-[var(--foreground-subtle)]" />
-                      </div>
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
+                          alt="Property placeholder"
+                          className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm rounded-lg px-2.5 py-1.5 border border-white/10">
+                            <Home size={13} className="text-white/50" />
+                            <span className="text-xs text-white/50">No photo</span>
+                          </div>
+                        </div>
+                      </>
                     )}
 
                     {/* Status badge over image */}

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Building2, Zap, Shield, BarChart3 } from "lucide-react";
+
+const AUTH_BG = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80";
 
 const features = [
   { icon: Zap, text: "AI-powered lead analysis in seconds" },
@@ -17,6 +20,18 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             background: "linear-gradient(135deg, #030712 0%, #0a0f1e 40%, #111827 100%)",
           }}
         />
+        {/* Property background image */}
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src={AUTH_BG}
+            alt=""
+            fill
+            className="object-cover object-center opacity-[0.22]"
+            sizes="55vw"
+            aria-hidden
+            priority
+          />
+        </div>
         <div
           className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
           style={{

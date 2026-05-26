@@ -43,7 +43,7 @@ export default function Testimonials() {
           src={TESTIMONIALS_BG}
           alt=""
           fill
-          className="object-cover object-center opacity-[0.05]"
+          className="object-cover object-center opacity-[0.09]"
           sizes="100vw"
           aria-hidden
         />
