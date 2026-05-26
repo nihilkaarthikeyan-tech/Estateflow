@@ -5,6 +5,7 @@ import Pain           from "@/components/landing/Pain";
 import StatsBar       from "@/components/landing/StatsBar";
 import Features       from "@/components/landing/Features";
 import AIWorkflow     from "@/components/landing/AIWorkflow";
+import DayInLife      from "@/components/landing/DayInLife";
 import Testimonials   from "@/components/landing/Testimonials";
 import Comparison     from "@/components/landing/Comparison";
 import FAQ            from "@/components/landing/FAQ";
@@ -36,6 +37,7 @@ export default function LandingPage() {
             <StatsBar />
             <Features />
             <AIWorkflow />
+            <DayInLife />
             <Testimonials />
             <Comparison />
             <FAQ />
