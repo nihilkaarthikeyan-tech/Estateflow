@@ -1,105 +1,76 @@
 import Link from "next/link";
-import { Building2, Twitter, Linkedin, Github, Mail } from "lucide-react";
-
-const columns = [
-  {
-    heading: "Product",
-    links: [
-      { label: "Features",     href: "#features" },
-      { label: "How it works", href: "#workflow" },
-      { label: "FAQ",          href: "#faq" },
-      { label: "Contact",      href: "#contact" },
-    ],
-  },
-  {
-    heading: "Platform",
-    links: [
-      { label: "AI Lead Scoring",  href: "#features" },
-      { label: "Voice AI Agent",   href: "#features" },
-      { label: "CRM Dashboard",    href: "#features" },
-      { label: "Analytics",        href: "#features" },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { label: "Sign in",  href: "/login" },
-      { label: "Sign up",  href: "/signup" },
-      { label: "Privacy",  href: "#" },
-      { label: "Terms",    href: "#" },
-    ],
-  },
-];
+import { Mail } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--border)] px-4 sm:px-6 pt-16 pb-10 relative bg-[var(--surface)]/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-14">
-          {/* Brand */}
-          <div className="col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
-              <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-2))", boxShadow: "0 4px 16px var(--accent-glow)" }}
-              >
-                <Building2 size={16} className="text-white" />
-              </div>
-              <span className="text-sm font-extrabold text-[var(--foreground)]">
-                EstateFlow <span className="gradient-text">AI</span>
+    <footer className="border-t border-[rgba(255,255,255,0.07)] px-6 sm:px-12 pt-16 pb-10 bg-[var(--background)]">
+      <div className="max-w-[1400px] mx-auto">
+
+        {/* Elyse-style footer — 3 columns with parenthesized labels */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-14">
+
+          {/* Brand — big serif name like Elyse */}
+          <div className="sm:col-span-1">
+            <p className="section-label mb-4">(Get in Touch)</p>
+            <Link href="/" className="block mb-6">
+              <span className="font-serif text-4xl sm:text-5xl font-bold text-[var(--foreground)]"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif", letterSpacing: "-0.02em" }}>
+                EstateFlow
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-[var(--foreground-muted)] max-w-xs mb-6">
+            <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-xs">
               The AI-powered CRM built for modern real estate agencies across India.
-              Capture, score and close more leads — automatically.
             </p>
-            {/* Social links */}
-            <div className="flex items-center gap-2">
-              {[
-                { icon: Twitter,  href: "#", label: "Twitter"  },
-                { icon: Linkedin, href: "#", label: "LinkedIn" },
-                { icon: Github,   href: "#", label: "GitHub"   },
-                { icon: Mail,     href: "mailto:nihilkaarthikeyan@gmail.com", label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--foreground-subtle)] hover:text-[var(--foreground)] hover:bg-white/[0.06] border border-[var(--border)] transition-colors"
-                >
-                  <Icon size={14} />
-                </a>
-              ))}
-            </div>
           </div>
 
-          {columns.map((col) => (
-            <div key={col.heading}>
-              <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--foreground-subtle)] mb-4">
-                {col.heading}
-              </p>
-              <ul className="flex flex-col gap-3">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Links */}
+          <div>
+            <p className="section-label mb-6">(Platform)</p>
+            <ul className="space-y-3">
+              {[
+                { label: "AI Lead Scoring",  href: "#features" },
+                { label: "WhatsApp Capture", href: "#features" },
+                { label: "Voice AI Agent",   href: "#features" },
+                { label: "Analytics",        href: "#features" },
+                { label: "How it Works",     href: "#workflow" },
+              ].map(link => (
+                <li key={link.label}>
+                  <Link href={link.href}
+                    className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <p className="section-label mb-6">(Contact)</p>
+            <div className="space-y-2">
+              <a href="mailto:nihilkaarthikeyan@gmail.com"
+                className="flex items-center gap-2 text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+                <Mail size={13} />
+                nihilkaarthikeyan@gmail.com
+              </a>
             </div>
-          ))}
+            <div className="mt-6 space-y-2">
+              <p className="text-[11px] text-[var(--foreground-subtle)] uppercase tracking-[0.1em]">Quick links</p>
+              <div className="flex gap-4">
+                <Link href="/login" className="text-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">Sign in</Link>
+                <Link href="/signup" className="text-sm text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors">Get Demo →</Link>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-[var(--border)]">
+        {/* Bottom bar */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 border-t border-[rgba(255,255,255,0.07)]">
           <p className="text-xs text-[var(--foreground-subtle)]">
             © {new Date().getFullYear()} EstateFlow AI. All rights reserved.
           </p>
           <p className="text-xs text-[var(--foreground-subtle)]">
-            Built with Next.js · Supabase · OpenAI · Vapi.ai
+            Built for Indian real estate · Powered by OpenAI · Vapi.ai · Supabase
           </p>
         </div>
       </div>

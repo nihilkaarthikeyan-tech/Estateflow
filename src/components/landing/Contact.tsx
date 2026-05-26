@@ -1,78 +1,140 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Zap } from "lucide-react";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", agency: "", phone: "" });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simple mailto fallback — replace with your actual endpoint
+    setSent(true);
+  };
+
   return (
-    <section id="contact" className="relative px-4 sm:px-6 py-28 sm:py-36 overflow-hidden">
-      {/* Deep background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--surface)]/50 to-[var(--surface)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(91,110,245,0.15)_0%,transparent_70%)] pointer-events-none" />
+    <section id="contact" className="section-rule landing-section px-6 sm:px-12">
+      <div className="max-w-[1400px] mx-auto">
 
-      <div className="relative max-w-3xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="section-label mb-12"
         >
-          {/* Live badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-[var(--success-muted)] border border-[rgba(16,185,129,0.25)] text-[var(--success)] mb-8">
-            <span className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse" />
-            Set up in under 10 minutes — no card required
-          </div>
+          (Get Started)
+        </motion.p>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.04em] leading-[1.05] text-[var(--foreground)] mb-6">
-            Your next big deal is{" "}
-            <span className="gradient-text-animated">already waiting.</span>
-          </h2>
+        {/* Split layout — like Elyse contact section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[rgba(255,255,255,0.06)]">
 
-          <p className="text-base sm:text-xl text-[var(--foreground-muted)] leading-relaxed mb-10 max-w-xl mx-auto">
-            Every hour you wait, a competitor with AI is responding to leads that should have been yours.
-            Start today. First lead captured before you finish your chai.
-          </p>
+          {/* Left — editorial content */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease }}
+            className="bg-[var(--background)] p-10 sm:p-16 flex flex-col justify-between gap-12"
+          >
+            <div>
+              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--foreground)] leading-[0.9] tracking-[-0.02em] mb-8"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                Start Closing<br />
+                <em className="font-normal" style={{ fontStyle: "italic" }}>More Deals</em><br />
+                Today.
+              </h2>
+              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-xs">
+                Right now, a buyer just messaged. Are you going to reply in 3 hours — or in 4 seconds?
+                The agent who replies first wins. Always.
+              </p>
+            </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
-            <Link
-              href="/signup"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-bold rounded-2xl text-base px-9 py-4 text-[#07070f] active:scale-[0.98] transition-all"
-              style={{ background: "linear-gradient(135deg, #fcd34d, #f59e0b)", boxShadow: "0 0 40px rgba(245,158,11,0.4)" }}
-            >
-              <Zap size={16} />
-              Start free trial
-              <ArrowRight size={15} />
-            </Link>
-            <a
-              href="mailto:nihilkaarthikeyan@gmail.com"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-semibold rounded-2xl text-base px-7 py-4 border border-[var(--border-strong)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-white/[0.04] transition-all"
-            >
-              <MessageCircle size={16} />
-              Talk to us
-            </a>
-          </div>
+            {/* Trust signals */}
+            <div className="space-y-3">
+              {[
+                "No credit card required",
+                "Set up in under 10 minutes",
+                "14-day free trial",
+                "Cancel anytime",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3">
+                  <div className="w-1 h-1 rounded-full bg-[var(--gold)]" />
+                  <span className="text-xs text-[var(--foreground-muted)] uppercase tracking-[0.1em]">{item}</span>
+                </div>
+              ))}
+            </div>
 
-          <p className="text-xs text-[var(--foreground-subtle)]">
-            No credit card · No setup fees · Cancel anytime · 14-day free trial
-          </p>
+            {/* Already have account */}
+            <p className="text-xs text-[var(--foreground-subtle)]">
+              Already have an account?{" "}
+              <Link href="/login" className="text-[var(--gold)] hover:underline">Sign in →</Link>
+            </p>
+          </motion.div>
 
-          {/* Feature chips */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-            {[
-              "✓ AI lead scoring",
-              "✓ Voice AI agent",
-              "✓ Auto follow-ups",
-              "✓ WhatsApp capture",
-              "✓ Property matching",
-              "✓ Email alerts",
-            ].map((f) => (
-              <span key={f} className="px-3 py-1.5 rounded-full text-xs font-medium text-[var(--foreground-muted)] bg-[var(--surface-2)] border border-[var(--border)]">
-                {f}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+          {/* Right — forest green panel with form, like Elyse */}
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1, ease }}
+            className="forest-panel p-10 sm:p-16"
+          >
+            {sent ? (
+              <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                <p className="font-serif text-3xl font-bold text-[var(--foreground)] mb-4"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  We&apos;ll be in touch.
+                </p>
+                <p className="text-sm text-[var(--foreground-muted)]">
+                  Our team will contact you within 24 hours.
+                </p>
+              </div>
+            ) : (
+              <>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[var(--foreground)] leading-tight mb-2"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  Start Your<br />
+                  <em style={{ fontStyle: "italic", fontWeight: 400 }}>Free Trial</em>
+                </h3>
+                <p className="text-xs text-[var(--foreground-muted)] mb-10">Our team will set you up within the hour.</p>
+
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {[
+                    { field: "name",   label: "Full Name",    type: "text",  placeholder: "Rajesh Menon" },
+                    { field: "email",  label: "Email",        type: "email", placeholder: "rajesh@agency.com" },
+                    { field: "phone",  label: "Phone",        type: "tel",   placeholder: "+91 98765 43210" },
+                    { field: "agency", label: "Agency Name",  type: "text",  placeholder: "Prestige Homes" },
+                  ].map(({ field, label, type, placeholder }) => (
+                    <div key={field}>
+                      <label className="input-label">{label}</label>
+                      <input
+                        type={type}
+                        placeholder={placeholder}
+                        value={form[field as keyof typeof form]}
+                        onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
+                        className="input-underline"
+                        required={field !== "agency"}
+                      />
+                    </div>
+                  ))}
+
+                  <button type="submit"
+                    className="w-full btn-oval btn-oval-filled mt-4 text-sm py-4 font-semibold tracking-[0.16em]">
+                    Request Access
+                  </button>
+                </form>
+
+                <p className="text-[10px] text-[var(--foreground-subtle)] mt-6 text-center">
+                  By submitting, you agree to our privacy policy. We promise to keep your information safe.
+                </p>
+              </>
+            )}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,256 +1,140 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Phone, BarChart3, Bell, Building2, Zap } from "lucide-react";
-import SectionHeader from "./SectionHeader";
 
-const leads = [
-  { name: "Priya Nair", score: 94, urgency: "high", tag: "3BHK · ₹1.2Cr" },
-  { name: "Rohit Verma", score: 78, urgency: "medium", tag: "2BHK · ₹65L" },
-  { name: "Sneha Iyer", score: 61, urgency: "low", tag: "Plot · ₹40L" },
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const features = [
+  {
+    num: "01",
+    title: "WhatsApp",
+    titleItalic: "Lead Capture",
+    body: "Every buyer who messages on WhatsApp is automatically captured, replied to within 4 seconds, and logged in your CRM — even at midnight. You wake up to warm, qualified leads.",
+    stat: "< 4s",
+    statLabel: "First reply time",
+  },
+  {
+    num: "02",
+    title: "AI Lead",
+    titleItalic: "Scoring",
+    body: "EstateFlow reads every enquiry and scores buyer intent from 1–100. Budget, urgency, location, property type — extracted instantly. Your agent knows exactly who to call first.",
+    stat: "94",
+    statLabel: "Avg. score accuracy",
+  },
+  {
+    num: "03",
+    title: "Automated",
+    titleItalic: "Follow-Ups",
+    body: "80% of deals close after 5+ follow-ups. EstateFlow sends all 5 — via WhatsApp — at the perfect intervals. Your lead never goes cold again while you're in a site visit.",
+    stat: "5×",
+    statLabel: "Follow-up touchpoints",
+  },
+  {
+    num: "04",
+    title: "Smart Property",
+    titleItalic: "Matching",
+    body: "AI instantly matches every buyer to your best listings based on their stated and inferred preferences. Your agent walks into every meeting already knowing which 3 properties to show.",
+    stat: "98%",
+    statLabel: "Match accuracy",
+  },
+  {
+    num: "05",
+    title: "Voice AI",
+    titleItalic: "Agent",
+    body: "A 24/7 AI voice agent answers every call to your office number, qualifies the buyer, extracts requirements, and books site visits — while you're in a meeting or asleep.",
+    stat: "24/7",
+    statLabel: "Always on",
+  },
+  {
+    num: "06",
+    title: "Revenue",
+    titleItalic: "Analytics",
+    body: "See your full pipeline at a glance — leads by stage, agent performance, conversion rates, deal size. Know exactly where your next ₹1Cr is coming from before end of month.",
+    stat: "₹2.4Cr",
+    statLabel: "Avg. monthly pipeline",
+  },
 ];
-
-const urgencyColor: Record<string, string> = {
-  high: "text-red-400 bg-red-500/10 border-red-500/20",
-  medium: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
-  low: "text-[var(--foreground-subtle)] bg-white/[0.04] border-white/[0.08]",
-};
-
-const kanban = [
-  { label: "New", count: 11, color: "var(--accent)" },
-  { label: "Contacted", count: 6, color: "#818cf8" },
-  { label: "Qualified", count: 4, color: "#a78bfa" },
-  { label: "Closed", count: 3, color: "var(--success)" },
-];
-
-const barData = [40, 65, 52, 78, 90, 70, 88];
-const barLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 export default function Features() {
   return (
-    <section id="features" className="landing-section px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          label="Capabilities"
-          title="Every tool your agency needs to win more deals"
-          description="Not just a CRM — a full AI engine built specifically for how Indian real estate teams work."
-        />
+    <section id="features" className="section-rule landing-section px-6 sm:px-12">
+      <div className="max-w-[1400px] mx-auto">
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-auto">
-
-          {/* Card 1 — AI Lead Scoring (wide) */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-16 sm:mb-20">
+          <div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="section-label mb-5"
+            >
+              (What EstateFlow Does)
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease }}
+              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight tracking-[-0.02em]"
+            >
+              Every tool an agent needs<br />
+              <em className="font-normal" style={{ fontStyle: "italic" }}>to win more deals</em>
+            </motion.h2>
+          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 overflow-hidden relative card-glow"
+            transition={{ delay: 0.2 }}
+            className="text-sm text-[var(--foreground-muted)] max-w-xs leading-relaxed sm:text-right"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(ellipse,rgba(91,110,245,0.08)_0%,transparent_70%)] pointer-events-none" />
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--accent-muted)] border border-[var(--border-accent)]">
-                <Brain size={18} className="text-[var(--accent-light)]" />
-              </div>
+            Not just a CRM — a full AI engine built for how Indian real estate teams actually work.
+          </motion.p>
+        </div>
+
+        {/* Numbered feature grid — like Elyse beliefs cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[rgba(255,255,255,0.06)]">
+          {features.map((f, i) => (
+            <motion.div
+              key={f.num}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.6, ease }}
+              className="bg-[var(--background)] p-8 sm:p-10 flex flex-col gap-6 group hover:bg-[var(--surface)] transition-colors duration-300"
+            >
+              {/* Number — italic like Elyse */}
+              <span className="font-serif italic text-5xl font-400 text-[rgba(255,255,255,0.12)] group-hover:text-[rgba(201,169,110,0.3)] transition-colors"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic", fontWeight: 400 }}>
+                ({f.num})
+              </span>
+
+              {/* Title — mixed roman + italic */}
               <div>
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">AI Lead Qualification</h3>
-                <p className="text-xs text-[var(--foreground-muted)]">Every lead scored instantly — budget, intent, urgency.</p>
+                <h3 className="font-serif text-xl font-bold text-[var(--foreground)] leading-tight"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  {f.title}{" "}
+                  <em className="font-normal" style={{ fontStyle: "italic" }}>{f.titleItalic}</em>
+                </h3>
               </div>
-            </div>
-            <div className="space-y-2.5">
-              {leads.map((lead) => (
-                <div key={lead.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-2)] border border-white/[0.06]">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--cyan)] flex items-center justify-center text-[10px] font-bold text-white shrink-0">
-                    {lead.name[0]}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-semibold text-[var(--foreground)] truncate">{lead.name}</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide border ${urgencyColor[lead.urgency]}`}>
-                        {lead.urgency}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1 rounded-full bg-[var(--surface-3)] overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--cyan)]"
-                          style={{ width: `${lead.score}%` }}
-                        />
-                      </div>
-                      <span className="text-[10px] font-bold text-[var(--foreground)] tabular-nums shrink-0">{lead.score}</span>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-[var(--foreground-subtle)] shrink-0">{lead.tag}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
 
-          {/* Card 2 — Voice AI Agent */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 relative overflow-hidden"
-          >
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-emerald-500/[0.06] to-transparent pointer-events-none" />
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-500/10 border border-emerald-500/20 mb-4">
-              <Phone size={18} className="text-emerald-400" />
-            </div>
-            <h3 className="text-sm font-semibold text-[var(--foreground)] mb-1">Voice AI Agent</h3>
-            <p className="text-xs text-[var(--foreground-muted)] mb-5">Answers calls 24/7, qualifies leads and captures details automatically.</p>
+              {/* Body */}
+              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed flex-1">
+                {f.body}
+              </p>
 
-            {/* Call UI preview */}
-            <div className="rounded-xl bg-[var(--surface-2)] border border-white/[0.06] p-3 space-y-2.5">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm">🏠</div>
-                <div>
-                  <p className="text-xs font-semibold text-[var(--foreground)]">EstateFlow AI</p>
-                  <div className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] text-emerald-400">Speaking…</span>
-                  </div>
-                </div>
-                <span className="ml-auto font-mono text-[10px] text-[var(--foreground-subtle)]">01:24</span>
+              {/* Stat */}
+              <div className="pt-4 border-t border-[rgba(255,255,255,0.07)]">
+                <p className="font-serif text-2xl font-bold text-[var(--gold)]"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  {f.stat}
+                </p>
+                <p className="text-[11px] text-[var(--foreground-subtle)] uppercase tracking-[0.1em] mt-1">{f.statLabel}</p>
               </div>
-              <div className="flex gap-1 items-end h-5">
-                {[3, 6, 9, 5, 8, 4, 7, 6, 3, 5, 8, 4].map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 rounded-sm bg-emerald-400/60"
-                    style={{ height: `${h * 8}%`, animationDelay: `${i * 80}ms` }}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 3 — Kanban Pipeline */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6"
-          >
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-violet-500/10 border border-violet-500/20 mb-4">
-              <Zap size={18} className="text-violet-400" />
-            </div>
-            <h3 className="text-sm font-semibold text-[var(--foreground)] mb-1">Visual Sales Pipeline</h3>
-            <p className="text-xs text-[var(--foreground-muted)] mb-5">Drag leads through stages. See your pipeline at a glance.</p>
-            <div className="grid grid-cols-4 gap-2">
-              {kanban.map((col) => (
-                <div key={col.label} className="text-center">
-                  <div
-                    className="w-full rounded-xl py-3 mb-1.5 flex items-center justify-center text-lg font-bold"
-                    style={{ backgroundColor: `${col.color}18`, color: col.color }}
-                  >
-                    {col.count}
-                  </div>
-                  <p className="text-[9px] text-[var(--foreground-subtle)] leading-tight">{col.label}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Card 4 — Instant Alerts */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6"
-          >
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-orange-500/10 border border-orange-500/20 mb-4">
-              <Bell size={18} className="text-orange-400" />
-            </div>
-            <h3 className="text-sm font-semibold text-[var(--foreground)] mb-1">Instant Lead Alerts</h3>
-            <p className="text-xs text-[var(--foreground-muted)] mb-4">Your agent gets notified the second a hot lead lands.</p>
-            <div className="space-y-2">
-              {[
-                { msg: "🔴 HIGH — Arjun Mehta wants 3BHK, ₹90L, needs response in 15 min", time: "now" },
-                { msg: "New lead from website — Priya Nair, budget ₹1.2Cr, South Chennai", time: "3m" },
-              ].map((n, i) => (
-                <div key={i} className="flex gap-2 p-2.5 rounded-xl bg-[var(--surface-2)] border border-white/[0.06]">
-                  <p className="text-[10px] text-[var(--foreground-muted)] flex-1 leading-relaxed">{n.msg}</p>
-                  <span className="text-[9px] text-[var(--foreground-subtle)] shrink-0">{n.time}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Card 5 — Property Matching */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6"
-          >
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--accent-muted)] border border-[var(--border-accent)] mb-4">
-              <Building2 size={18} className="text-[var(--accent-light)]" />
-            </div>
-            <h3 className="text-sm font-semibold text-[var(--foreground)] mb-1">Smart Property Match</h3>
-            <p className="text-xs text-[var(--foreground-muted)] mb-4">AI matches every lead to your best listings instantly.</p>
-            <div className="space-y-2">
-              {[
-                { name: "Prestige Eden Garden", pct: 98 },
-                { name: "Brigade Utopia", pct: 91 },
-                { name: "Sobha City Tower", pct: 84 },
-              ].map((p) => (
-                <div key={p.name} className="flex items-center gap-2">
-                  <p className="text-[10px] text-[var(--foreground-muted)] w-32 truncate shrink-0">{p.name}</p>
-                  <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-3)] overflow-hidden">
-                    <div className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--cyan)]" style={{ width: `${p.pct}%` }} />
-                  </div>
-                  <span className="text-[10px] font-bold text-[var(--foreground)] tabular-nums">{p.pct}%</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Card 6 — Analytics (wide) */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.14, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-64 h-40 bg-[radial-gradient(ellipse,rgba(34,211,238,0.06)_0%,transparent_70%)] pointer-events-none" />
-            <div className="flex items-start justify-between gap-4 mb-5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--cyan-muted)] border border-[rgba(34,211,238,0.2)]">
-                  <BarChart3 size={18} className="text-[var(--cyan)]" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-[var(--foreground)]">Agency Analytics</h3>
-                  <p className="text-xs text-[var(--foreground-muted)]">Leads closed this week — real-time.</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xl font-bold text-[var(--foreground)]">₹2.4Cr</p>
-                <p className="text-[10px] text-[var(--success)]">↑ 23% vs last week</p>
-              </div>
-            </div>
-            {/* Mini bar chart */}
-            <div className="flex items-end gap-1.5 h-16">
-              {barData.map((h, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full rounded-t-md"
-                    style={{
-                      height: `${h}%`,
-                      background: i === 4 ? "linear-gradient(to top, var(--accent), var(--cyan))" : "var(--surface-3)",
-                    }}
-                  />
-                  <span className="text-[8px] text-[var(--foreground-subtle)]">{barLabels[i]}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,107 +1,127 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Clock, FileX, PhoneOff } from "lucide-react";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const pains = [
   {
-    icon: Clock,
-    color: "#ef4444",
-    colorMuted: "rgba(239,68,68,0.1)",
-    colorBorder: "rgba(239,68,68,0.2)",
-    title: "You respond in 3 hours. They signed elsewhere in 2.",
+    num: "01",
+    title: "You respond in 3 hours.",
+    titleItalic: "They signed elsewhere in 2.",
     body: "A buyer WhatsApped at 11pm asking about a 3BHK. Your agent saw it at 9am. The lead had already signed with the competitor who replied at 11:04pm — with an AI.",
-    stat: "78% of leads go to the first agent who responds",
+    stat: "78%",
+    statLabel: "of leads go to the first agent who responds",
   },
   {
-    icon: FileX,
-    color: "#f59e0b",
-    colorMuted: "rgba(245,158,11,0.1)",
-    colorBorder: "rgba(245,158,11,0.2)",
-    title: "Your team spends 3 hours/day just copying WhatsApp messages.",
+    num: "02",
+    title: "3 hours a day",
+    titleItalic: "copying WhatsApp into Excel.",
     body: "Name, phone, budget, location — manually typed into Excel, then into your CRM, then into a follow-up message. Every single lead. That's 750+ hours a year per agent. Wasted.",
-    stat: "750+ hours/year lost to manual data entry per agent",
+    stat: "750+",
+    statLabel: "hours per year lost to manual data entry",
   },
   {
-    icon: PhoneOff,
-    color: "#8b5cf6",
-    colorMuted: "rgba(139,92,246,0.1)",
-    colorBorder: "rgba(139,92,246,0.2)",
-    title: "You follow up once. The deal closes on the 5th follow-up.",
+    num: "03",
+    title: "You follow up once.",
+    titleItalic: "The deal closes on the 5th.",
     body: "Research shows 80% of real estate deals close after 5+ follow-ups. Most agents stop after the first. Your CRM has no system. Leads go cold. Revenue disappears.",
-    stat: "80% of deals close after the 5th follow-up",
+    stat: "80%",
+    statLabel: "of deals close after 5+ follow-ups",
   },
 ];
 
 export default function Pain() {
   return (
-    <section className="landing-section px-4 sm:px-6 relative">
-      {/* Dark bg tint for this section */}
-      <div className="absolute inset-0 bg-[var(--surface)]/30 pointer-events-none" />
+    <section className="section-rule landing-section px-6 sm:px-12">
+      <div className="max-w-[1400px] mx-auto">
 
-      <div className="relative max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="cinematic-reveal text-center mb-14"
-        >
-          <p className="section-label mb-4">The real problem</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight text-[var(--foreground)]">
-            Your agency is silently losing{" "}
-            <span style={{ color: "#ef4444" }}>₹10L+ every month</span>
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-[var(--foreground-muted)] max-w-xl mx-auto">
+        {/* Header */}
+        <div className="mb-16 sm:mb-20">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="section-label mb-5"
+          >
+            (The Real Problem)
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease }}
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight tracking-[-0.02em]"
+          >
+            Your agency is silently<br />
+            <em className="font-normal" style={{ fontStyle: "italic", color: "#f87171" }}>losing ₹10L+ every month</em>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mt-5 text-sm text-[var(--foreground-muted)] max-w-md leading-relaxed"
+          >
             Not because the leads are bad. Because the process is broken.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Editorial grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[rgba(255,255,255,0.06)]">
           {pains.map((p, i) => (
             <motion.div
-              key={p.title}
+              key={p.num}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="pain-card gradient-border p-6 flex flex-col gap-4"
+              transition={{ delay: i * 0.1, duration: 0.6, ease }}
+              className="bg-[var(--background)] hover:bg-[var(--surface)] transition-colors duration-300 p-8 sm:p-10 flex flex-col gap-6"
             >
-              {/* Icon */}
-              <div
-                className="w-11 h-11 rounded-2xl flex items-center justify-center"
-                style={{ background: p.colorMuted, border: `1px solid ${p.colorBorder}` }}
-              >
-                <p.icon size={20} style={{ color: p.color }} />
-              </div>
+              {/* Number */}
+              <span className="font-serif italic text-5xl text-[rgba(255,255,255,0.08)]"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic", fontWeight: 400 }}>
+                ({p.num})
+              </span>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-[var(--foreground)] leading-snug">{p.title}</h3>
+              <h3 className="font-serif text-xl font-bold text-[var(--foreground)] leading-snug"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                {p.title}{" "}
+                <em className="font-normal text-[var(--foreground-muted)]" style={{ fontStyle: "italic" }}>
+                  {p.titleItalic}
+                </em>
+              </h3>
 
               {/* Body */}
-              <p className="text-sm leading-relaxed text-[var(--foreground-muted)] flex-1">{p.body}</p>
+              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed flex-1">
+                {p.body}
+              </p>
 
               {/* Stat */}
-              <div
-                className="px-3 py-2.5 rounded-xl text-xs font-semibold"
-                style={{ background: p.colorMuted, color: p.color, border: `1px solid ${p.colorBorder}` }}
-              >
-                📌 {p.stat}
+              <div className="pt-4 border-t border-[rgba(255,255,255,0.07)]">
+                <p className="font-serif text-3xl font-bold text-[#f87171]"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  {p.stat}
+                </p>
+                <p className="text-[11px] text-[var(--foreground-subtle)] mt-1 leading-snug">{p.statLabel}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bridge line */}
+        {/* Bridge */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="text-center mt-12 text-lg sm:text-xl font-semibold text-[var(--foreground-muted)]"
+          transition={{ delay: 0.4 }}
+          className="mt-12 font-serif text-lg sm:text-xl italic text-[var(--foreground-muted)] text-center"
+          style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
         >
-          EstateFlow fixes all three.{" "}
-          <span className="text-[var(--foreground)]">Automatically.</span>
+          EstateFlow fixes all three —{" "}
+          <span className="text-[var(--foreground)] not-italic font-bold">automatically.</span>
         </motion.p>
       </div>
     </section>

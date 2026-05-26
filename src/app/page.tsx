@@ -1,7 +1,6 @@
 import SmoothScroll   from "@/components/SmoothScroll";
 import Navbar         from "@/components/landing/Navbar";
 import Hero           from "@/components/landing/Hero";
-import Ticker         from "@/components/landing/Ticker";
 import Pain           from "@/components/landing/Pain";
 import StatsBar       from "@/components/landing/StatsBar";
 import Features       from "@/components/landing/Features";
@@ -19,12 +18,11 @@ export default function LandingPage() {
     <SmoothScroll>
       <div className="landing-mesh min-h-screen overflow-x-hidden relative">
 
-        {/* Animated background orbs — fixed, parallax via GSAP */}
+        {/* Subtle background orbs */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden>
           <div className="orb orb-1" />
           <div className="orb orb-2" />
           <div className="orb orb-3" />
-          <div className="orb orb-4" />
         </div>
         {/* Dot grid */}
         <div className="fixed inset-0 dot-grid pointer-events-none z-0" aria-hidden />
@@ -34,7 +32,6 @@ export default function LandingPage() {
           <Navbar />
           <main>
             <Hero />
-            <Ticker />
             <Pain />
             <StatsBar />
             <Features />
