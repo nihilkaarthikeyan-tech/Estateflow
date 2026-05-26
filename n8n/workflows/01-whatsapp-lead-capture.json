@@ -1,0 +1,139 @@
+{
+  "name": "01 - WhatsApp Lead Capture",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-lead",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "wh-trigger",
+      "name": "WATI Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "whatsapp-lead-capture"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse WATI webhook payload\nconst body = $input.first().json;\n\n// WATI sends different formats — handle both\nconst waId = body.waId || body.from || '';\nconst senderName = body.senderName || body.pushname || 'Unknown';\nconst messageText = body.text?.body || body.message || '';\nconst messageType = body.type || 'text';\n\n// Only process text messages\nif (messageType !== 'text' || !messageText.trim()) {\n  return [{ json: { skip: true, reason: 'Non-text message' } }];\n}\n\n// Format phone: ensure it starts with country code\nconst phone = waId.startsWith('+') ? waId : `+${waId}`;\n\nreturn [{\n  json: {\n    phone,\n    name: senderName,\n    raw_message: messageText.trim(),\n    whatsapp_id: waId,\n    skip: false\n  }\n}];"
+      },
+      "id": "parse-message",
+      "name": "Parse WATI Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "skip-check",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": false,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-skip",
+      "name": "Is Text Message?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/lead-webhook",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "name", "value": "={{ $json.name }}" },
+            { "name": "phone", "value": "={{ $json.phone }}" },
+            { "name": "raw_message", "value": "={{ $json.raw_message }}" },
+            { "name": "source", "value": "whatsapp" },
+            { "name": "organization_id", "value": "={{ $env.ORG_ID }}" },
+            { "name": "webhook_secret", "value": "={{ $env.WEBHOOK_SECRET }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "save-lead",
+      "name": "Save Lead to CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build auto-reply message\nconst lead = $('Save Lead to CRM').first().json.lead;\nconst name = lead?.name?.split(' ')[0] || 'there';\nconst summary = lead?.summary || '';\nconst urgency = lead?.urgency || 'medium';\n\nlet reply = `Hi ${name}! 👋 Thank you for reaching out to us.\\n\\n`;\n\nif (summary) {\n  reply += `We've noted your requirement: ${summary}\\n\\n`;\n} \n\nif (urgency === 'high') {\n  reply += `We can see this is urgent for you. Our agent will call you within the next 30 minutes with matching properties.`;\n} else {\n  reply += `Our team will review your requirement and get back to you shortly with the best matching properties.`;\n}\n\nreply += `\\n\\nMeanwhile, you can view our available listings at: ${$env.ESTATEFLOW_URL}/listings`;\n\nreturn [{ json: { ...($input.first().json), reply_message: reply } }];"
+      },
+      "id": "build-reply",
+      "name": "Build Auto-Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://live-mt-server.wati.io/{{ $env.WATI_ACCOUNT_ID }}/api/v1/sendSessionMessage/{{ $('Parse WATI Message').first().json.whatsapp_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WATI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "messageText", "value": "={{ $json.reply_message }}" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-reply",
+      "name": "Send WhatsApp Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 200]
+    }
+  ],
+  "connections": {
+    "WATI Webhook": {
+      "main": [[{ "node": "Parse WATI Message", "type": "main", "index": 0 }]]
+    },
+    "Parse WATI Message": {
+      "main": [[{ "node": "Is Text Message?", "type": "main", "index": 0 }]]
+    },
+    "Is Text Message?": {
+      "main": [
+        [{ "node": "Save Lead to CRM", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Save Lead to CRM": {
+      "main": [[{ "node": "Build Auto-Reply", "type": "main", "index": 0 }]]
+    },
+    "Build Auto-Reply": {
+      "main": [[{ "node": "Send WhatsApp Reply", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Captures WhatsApp messages via WATI webhook, creates AI-analyzed lead in EstateFlow CRM, and sends an instant auto-reply.",
+    "templateCredsSetupCompleted": false
+  }
+}

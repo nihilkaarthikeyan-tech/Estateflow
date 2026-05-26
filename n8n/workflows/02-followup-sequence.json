@@ -1,0 +1,172 @@
+{
+  "name": "02 - Automated Follow-up Sequence",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 9 * * 1-6" }]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily 9AM (Mon-Sat)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/n8n/pending-followups",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-n8n-secret", "value": "={{ $env.N8N_SECRET }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-leads",
+      "name": "Get Leads Needing Follow-up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "has-leads",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "has-leads-check",
+      "name": "Any Leads to Follow Up?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "leads",
+        "options": {}
+      },
+      "id": "split-leads",
+      "name": "Split Into Individual Leads",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/generate-followup",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "leadId", "value": "={{ $json.id }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "generate-message",
+      "name": "Generate AI Follow-up Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://live-mt-server.wati.io/{{ $env.WATI_ACCOUNT_ID }}/api/v1/sendSessionMessage/{{ $('Split Into Individual Leads').item.json.phone.replace('+', '') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WATI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "messageText", "value": "={{ $json.message }}" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-followup",
+      "name": "Send WhatsApp Follow-up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NEXT_PUBLIC_SB_URL }}/rest/v1/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "lead_id", "value": "={{ $('Split Into Individual Leads').item.json.id }}" },
+            { "name": "message", "value": "={{ $('Generate AI Follow-up Message').item.json.message }}" },
+            { "name": "direction", "value": "outbound" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "log-conversation",
+      "name": "Log Follow-up in CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 200]
+    }
+  ],
+  "connections": {
+    "Daily 9AM (Mon-Sat)": {
+      "main": [[{ "node": "Get Leads Needing Follow-up", "type": "main", "index": 0 }]]
+    },
+    "Get Leads Needing Follow-up": {
+      "main": [[{ "node": "Any Leads to Follow Up?", "type": "main", "index": 0 }]]
+    },
+    "Any Leads to Follow Up?": {
+      "main": [
+        [{ "node": "Split Into Individual Leads", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Split Into Individual Leads": {
+      "main": [[{ "node": "Generate AI Follow-up Message", "type": "main", "index": 0 }]]
+    },
+    "Generate AI Follow-up Message": {
+      "main": [[{ "node": "Send WhatsApp Follow-up", "type": "main", "index": 0 }]]
+    },
+    "Send WhatsApp Follow-up": {
+      "main": [[{ "node": "Log Follow-up in CRM", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Runs every morning Mon-Sat at 9 AM. Fetches leads that need follow-up based on their pipeline stage, generates a personalized AI message, sends it via WhatsApp, and logs it in the CRM."
+  }
+}
