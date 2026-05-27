@@ -1,15 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit, getIP } from "@/lib/rate-limit";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 interface Message { role: "user" | "assistant"; content: string; }
 
 export async function POST(req: NextRequest) {
+  // 30 messages per minute per IP — generous for real chat, blocks scrapers
+  const { allowed } = rateLimit(`chat:${getIP(req)}`, 30, 60_000);
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many requests. Please slow down." }, { status: 429 });
+  }
+
   try {
     const { message, conversationHistory = [] } = await req.json();
-    if (!message) return NextResponse.json({ error: "Message is required" }, { status: 400 });
+    if (!message || typeof message !== "string") {
+      return NextResponse.json({ error: "Message is required" }, { status: 400 });
+    }
+
+    // Cap message length
+    const safeMessage = message.slice(0, 1000);
+
+    // Cap conversation history depth to prevent token abuse
+    const safeHistory = (conversationHistory as Message[]).slice(-10);
 
     let propertyContext = "";
     try {
@@ -49,8 +64,8 @@ Guidelines:
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       { role: "system", content: systemPrompt },
-      ...conversationHistory.map((m: Message) => ({ role: m.role, content: m.content })),
-      { role: "user", content: message },
+      ...safeHistory.map((m: Message) => ({ role: m.role, content: m.content })),
+      { role: "user", content: safeMessage },
     ];
 
     const completion = await openai.chat.completions.create({

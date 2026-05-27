@@ -81,7 +81,7 @@ export default function TenantsPage() {
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[
             { label: "Total Tenants", value: stats.total, icon: UserSquare2, color: "var(--accent)" },
             { label: "Active", value: stats.active, icon: CheckCircle2, color: "var(--success)" },

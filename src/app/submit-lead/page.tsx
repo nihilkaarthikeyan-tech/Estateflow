@@ -33,15 +33,15 @@ export default function SubmitLeadPage() {
     }
 
     setLoading(true);
-    const n8nUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
-    const endpoint = n8nUrl || "/api/lead-webhook";
+    // Always route through our own API — the server adds the webhook secret
+    // Never put secrets in client-side code
+    const endpoint = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "/api/lead-webhook";
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
         source: "web_form",
-        webhook_secret: "estateflow-secret-2024",
       }),
     });
 

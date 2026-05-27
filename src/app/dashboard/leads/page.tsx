@@ -213,11 +213,11 @@ export default function LeadsPage() {
           </motion.div>
         )}
 
-        {/* TABLE VIEW */}
+        {/* TABLE VIEW — desktop table / mobile cards */}
         {!loading && displayed.length > 0 && view === "table" && (
           <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden">
-            {/* Header */}
-            <div className="grid grid-cols-[1.5fr_2fr_auto_auto_auto_auto] gap-3 px-5 py-3 border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
+            {/* Desktop header — hidden on mobile */}
+            <div className="hidden md:grid grid-cols-[1.5fr_2fr_auto_auto_auto_auto] gap-3 px-5 py-3 border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
               <span>Lead</span>
               <span>Requirement</span>
               <span>Urgency</span>
@@ -235,85 +235,88 @@ export default function LeadsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ delay: i * 0.04 }}
-                    className="grid grid-cols-[1.5fr_2fr_auto_auto_auto_auto] gap-3 items-center px-5 py-3.5 hover:bg-[var(--surface-2)] transition-colors group"
+                    className="group hover:bg-[var(--surface-2)] transition-colors"
                   >
-                    {/* Lead info */}
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-                        style={{ background: `linear-gradient(135deg, ${stageColor[lead.status as LeadStage]}cc, ${stageColor[lead.status as LeadStage]}44)` }}
-                      >
-                        {(lead.name ?? "?")[0].toUpperCase()}
+                    {/* ── Desktop row ── */}
+                    <div className="hidden md:grid grid-cols-[1.5fr_2fr_auto_auto_auto_auto] gap-3 items-center px-5 py-3.5">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
+                          style={{ background: `linear-gradient(135deg, ${stageColor[lead.status as LeadStage]}cc, ${stageColor[lead.status as LeadStage]}44)` }}
+                        >
+                          {(lead.name ?? "?")[0].toUpperCase()}
+                        </div>
+                        <div className="min-w-0">
+                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--accent)] transition-colors block truncate">
+                            {lead.name ?? "Unknown"}
+                          </Link>
+                          {lead.phone && (
+                            <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mt-0.5">
+                              <Phone size={10} /><span>{lead.phone}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--accent)] transition-colors block truncate">
-                          {lead.name ?? "Unknown"}
-                        </Link>
-                        {lead.phone && (
-                          <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mt-0.5">
-                            <Phone size={10} />
-                            <span>{lead.phone}</span>
+                      <div>
+                        <p className="text-xs text-[var(--foreground-muted)] line-clamp-1">{lead.summary || lead.raw_message || "—"}</p>
+                        {(lead.budget || lead.location) && (
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Brain size={9} className="text-[var(--accent)]" />
+                            <span className="text-xs text-[var(--accent)]">{[lead.budget, lead.location].filter(Boolean).join(" · ")}</span>
                           </div>
                         )}
                       </div>
+                      <Badge variant={urgencyVariant[lead.urgency as LeadUrgency ?? "medium"]}>{lead.urgency ?? "medium"}</Badge>
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
+                        style={{ background: `${stageColor[lead.status as LeadStage]}15`, color: stageColor[lead.status as LeadStage] }}>
+                        {stageLabel[lead.status as LeadStage]}
+                      </span>
+                      <div className="flex items-center gap-1 text-xs text-[var(--foreground-subtle)] whitespace-nowrap">
+                        <Clock size={10} />{timeAgo(lead.created_at)}
+                      </div>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Link href={`/dashboard/leads/${lead.id}`}>
+                          <button className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-3)] transition-colors"><Eye size={13} /></button>
+                        </Link>
+                        <button onClick={() => openEdit(lead)} className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-3)] transition-colors"><Pencil size={13} /></button>
+                        <button onClick={() => setDeleteTarget(lead)} className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10 transition-colors"><Trash2 size={13} /></button>
+                      </div>
                     </div>
 
-                    {/* Requirement */}
-                    <div>
-                      <p className="text-xs text-[var(--foreground-muted)] line-clamp-1">
-                        {lead.summary || lead.raw_message || "—"}
-                      </p>
-                      {(lead.budget || lead.location) && (
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <Brain size={9} className="text-[var(--accent)]" />
-                          <span className="text-xs text-[var(--accent)]">
-                            {[lead.budget, lead.location].filter(Boolean).join(" · ")}
+                    {/* ── Mobile card ── */}
+                    <div className="md:hidden px-4 py-3.5 flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0"
+                        style={{ background: `linear-gradient(135deg, ${stageColor[lead.status as LeadStage]}cc, ${stageColor[lead.status as LeadStage]}44)` }}>
+                        {(lead.name ?? "?")[0].toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--accent)] transition-colors truncate">
+                            {lead.name ?? "Unknown"}
+                          </Link>
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full shrink-0"
+                            style={{ background: `${stageColor[lead.status as LeadStage]}15`, color: stageColor[lead.status as LeadStage] }}>
+                            {stageLabel[lead.status as LeadStage]}
                           </span>
                         </div>
-                      )}
-                    </div>
-
-                    {/* Urgency */}
-                    <Badge variant={urgencyVariant[lead.urgency as LeadUrgency ?? "medium"]}>
-                      {lead.urgency ?? "medium"}
-                    </Badge>
-
-                    {/* Stage pill */}
-                    <span
-                      className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
-                      style={{
-                        background: `${stageColor[lead.status as LeadStage]}15`,
-                        color: stageColor[lead.status as LeadStage],
-                      }}
-                    >
-                      {stageLabel[lead.status as LeadStage]}
-                    </span>
-
-                    {/* Time */}
-                    <div className="flex items-center gap-1 text-xs text-[var(--foreground-subtle)] whitespace-nowrap">
-                      <Clock size={10} />
-                      {timeAgo(lead.created_at)}
-                    </div>
-
-                    {/* Row actions */}
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Link href={`/dashboard/leads/${lead.id}`}>
-                        <button className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-3)] transition-colors">
-                          <Eye size={13} />
-                        </button>
-                      </Link>
-                      <button
-                        onClick={() => openEdit(lead)}
-                        className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-3)] transition-colors"
-                      >
-                        <Pencil size={13} />
-                      </button>
-                      <button
-                        onClick={() => setDeleteTarget(lead)}
-                        className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10 transition-colors"
-                      >
-                        <Trash2 size={13} />
-                      </button>
+                        {lead.phone && (
+                          <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mb-1">
+                            <Phone size={10} /><span>{lead.phone}</span>
+                          </div>
+                        )}
+                        <p className="text-xs text-[var(--foreground-muted)] line-clamp-1 mb-2">{lead.summary || lead.raw_message || "—"}</p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant={urgencyVariant[lead.urgency as LeadUrgency ?? "medium"]}>{lead.urgency ?? "medium"}</Badge>
+                          <span className="flex items-center gap-1 text-xs text-[var(--foreground-subtle)]"><Clock size={10} />{timeAgo(lead.created_at)}</span>
+                          <div className="flex items-center gap-1 ml-auto">
+                            <Link href={`/dashboard/leads/${lead.id}`}>
+                              <button className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-3)] transition-colors"><Eye size={13} /></button>
+                            </Link>
+                            <button onClick={() => openEdit(lead)} className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:bg-[var(--surface-3)] transition-colors"><Pencil size={13} /></button>
+                            <button onClick={() => setDeleteTarget(lead)} className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10 transition-colors"><Trash2 size={13} /></button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 ))}

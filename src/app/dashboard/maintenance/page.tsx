@@ -109,7 +109,7 @@ export default function MaintenancePage() {
       <div className="flex-1 overflow-y-auto p-6">
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[
             { label: "Open", value: stats.open, icon: AlertCircle, color: "var(--warning)" },
             { label: "In Progress", value: stats.in_progress, icon: Clock, color: "var(--accent)" },

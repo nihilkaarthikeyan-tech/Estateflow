@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { rateLimit, getIP } from "@/lib/rate-limit";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req: NextRequest) {
+  // 20 TTS calls per minute per IP — prevents cost abuse
+  const { allowed } = rateLimit(`tts:${getIP(req)}`, 20, 60_000);
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   try {
     const { text } = await req.json();
 
@@ -11,7 +18,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "text is required" }, { status: 400 });
     }
 
-    const truncated = text.slice(0, 1000);
+    // Hard cap at 500 chars — keeps cost low and latency fast
+    const truncated = text.slice(0, 500);
 
     const mp3 = await openai.audio.speech.create({
       model: "tts-1",
