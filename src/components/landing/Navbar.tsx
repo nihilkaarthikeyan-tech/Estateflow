@@ -95,11 +95,11 @@ export default function Navbar() {
               ))}
               <div className="pt-4 border-t border-[rgba(255,255,255,0.07)] flex flex-col gap-3">
                 <Link href="/tenant-portal" onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-65 text-center py-2">
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-65 hover:opacity-100 transition-opacity text-center py-2">
                   Tenant Portal
                 </Link>
                 <Link href="/login" onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-80 text-center py-2">
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-80 hover:opacity-100 transition-opacity text-center py-2">
                   Agent Login
                 </Link>
                 <Link href="/signup" onClick={() => setMobileOpen(false)} className="btn-oval text-center">
