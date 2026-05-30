@@ -32,7 +32,9 @@ export default function Navbar() {
   return (
     <header className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      scrolled ? "glass border-b border-[rgba(255,255,255,0.06)]" : ""
+      scrolled
+        ? "glass border-b border-[rgba(255,255,255,0.06)]"
+        : "bg-gradient-to-b from-[rgba(13,15,14,0.72)] to-transparent"
     )}>
       <div className="max-w-[1400px] mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
 
@@ -48,7 +50,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a key={link.label} href={link.href}
-              className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+              className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-75 hover:opacity-100 transition-opacity">
               {link.label}
             </a>
           ))}
@@ -57,11 +59,11 @@ export default function Navbar() {
         {/* CTA — oval pill like Elyse */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/tenant-portal"
-            className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-subtle)] hover:text-[var(--foreground-muted)] transition-colors">
+            className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-65 hover:opacity-100 transition-opacity">
             Tenant Portal
           </Link>
           <Link href="/login"
-            className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors">
+            className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-80 hover:opacity-100 transition-opacity">
             Agent Login
           </Link>
           <Link href="/signup" className="btn-oval">
@@ -87,17 +89,17 @@ export default function Navbar() {
             <div className="px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a key={link.label} href={link.href} onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors py-2">
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-75 hover:opacity-100 transition-opacity py-2">
                   {link.label}
                 </a>
               ))}
               <div className="pt-4 border-t border-[rgba(255,255,255,0.07)] flex flex-col gap-3">
                 <Link href="/tenant-portal" onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-subtle)] text-center py-2">
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-65 text-center py-2">
                   Tenant Portal
                 </Link>
                 <Link href="/login" onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground-muted)] text-center py-2">
+                  className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--foreground)] opacity-80 text-center py-2">
                   Agent Login
                 </Link>
                 <Link href="/signup" onClick={() => setMobileOpen(false)} className="btn-oval text-center">

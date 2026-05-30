@@ -47,7 +47,7 @@ export default function Hero() {
         </p>
         <div className="mt-5 flex items-center justify-end gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11px] text-emerald-400 uppercase tracking-[0.12em]">Live · 50+ agencies</span>
+          <span className="text-[11px] text-emerald-400 uppercase tracking-[0.12em]">Early access · India</span>
         </div>
       </motion.div>
 

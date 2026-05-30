@@ -7,37 +7,33 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 const TESTIMONIALS_BG = "https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=1920&q=80";
 
-const testimonials = [
+const outcomes = [
   {
-    quote: "Our response time dropped from 3 hours to under a minute. The AI reads the lead and tells my agent exactly what to say. We closed 6 extra deals in our first month — that's ₹11L extra commission.",
-    name: "Rajesh Menon",
-    role: "Sr. Sales Manager, Prestige Homes",
-    city: "Bangalore",
-    result: "+6 deals · Month 1",
-    initials: "RM",
+    metric: "3 hrs → 90s",
+    headline: "Response time that wins deals",
+    body: "Most Indian agencies respond to leads in 3–6 hours. The buyer has already talked to two competitors by then. EstateFlow's AI replies instantly — extracts requirements and scores intent before your agent even opens their phone.",
+    tag: "Lead Response",
+    initials: "LR",
   },
   {
-    quote: "The AI chatbot handles enquiries at midnight while I sleep. I wake up to fully scored leads with budget, location and urgency already extracted. My team now works smarter, not harder.",
-    name: "Kavitha Subramaniam",
-    role: "Director, KVS Properties",
-    city: "Chennai",
-    result: "3× leads converted",
-    initials: "KS",
+    metric: "0 leads lost",
+    headline: "Every midnight enquiry, captured",
+    body: "Real estate buyers browse at 11 PM. Your current process misses every one of them. EstateFlow's voice agent and AI intake work round the clock — so Monday morning your CRM already has the weekend's qualified leads waiting.",
+    tag: "24/7 Coverage",
+    initials: "AC",
   },
   {
-    quote: "I was sceptical about AI. But EstateFlow actually understands Indian real estate. The property matching is scary accurate. Our voice agent on the website books site visits on its own now.",
-    name: "Aditya Shah",
-    role: "Founder, Prime Estates Mumbai",
-    city: "Mumbai",
-    result: "₹4Cr pipeline · 6 weeks",
-    initials: "AS",
+    metric: "1 place",
+    headline: "Your full pipeline, visible at a glance",
+    body: "Leads across WhatsApp, calls, and web forms land in one CRM. Every lead is staged from New to Closed, AI-analyzed with budget and urgency, and assigned to the right agent — no spreadsheets, no sticky notes.",
+    tag: "CRM Pipeline",
+    initials: "CP",
   },
 ];
 
 export default function Testimonials() {
   return (
     <section id="testimonials" className="section-rule landing-section px-6 sm:px-12 relative">
-      {/* Subtle ambient property image — city skyline or rooftop */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <Image
           src={TESTIMONIALS_BG}
@@ -50,7 +46,6 @@ export default function Testimonials() {
       </div>
       <div className="max-w-[1400px] mx-auto relative z-10">
 
-        {/* Header */}
         <div className="mb-16 sm:mb-20">
           <motion.p
             initial={{ opacity: 0 }}
@@ -66,78 +61,87 @@ export default function Testimonials() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease }}
             style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            className="cinematic-reveal font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight tracking-[-0.02em]"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight tracking-[-0.02em]"
           >
-            Agents across India<br />
-            <em className="font-normal" style={{ fontStyle: "italic" }}>are winning more deals</em>
+            What EstateFlow<br />
+            <em className="font-normal" style={{ fontStyle: "italic" }}>actually changes for your agency</em>
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mt-5 text-sm text-[var(--foreground-muted)] max-w-md"
+          >
+            We&apos;re in early access. Here&apos;s exactly what your team gains from day one.
+          </motion.p>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[rgba(255,255,255,0.06)]">
-          {testimonials.map((t, i) => (
+          {outcomes.map((o, i) => (
             <motion.div
-              key={t.name}
+              key={o.tag}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6, ease }}
-              className="testimonial-item bg-[var(--background)] hover:bg-[var(--surface)] transition-colors duration-300 p-8 sm:p-10 flex flex-col gap-6"
+              className="bg-[var(--background)] hover:bg-[var(--surface)] transition-colors duration-300 p-8 sm:p-10 flex flex-col gap-6"
             >
-              {/* Large quote mark — serif italic gold */}
-              <div className="font-serif text-6xl leading-none text-[rgba(201,169,110,0.25)]"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic" }}>
-                &ldquo;
-              </div>
-
-              {/* Quote */}
-              <p className="text-sm sm:text-base text-[var(--foreground-muted)] leading-relaxed flex-1 -mt-3">
-                {t.quote}
+              {/* Big metric */}
+              <p
+                className="font-serif font-bold text-[var(--gold)]"
+                style={{
+                  fontFamily: "var(--font-playfair), Georgia, serif",
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  lineHeight: 1,
+                }}
+              >
+                {o.metric}
               </p>
 
-              {/* Result */}
-              <div className="flex items-center gap-2">
-                <div className="w-1 h-6 bg-[var(--gold)]" />
-                <span className="text-[11px] font-semibold text-[var(--gold)] uppercase tracking-[0.1em]">{t.result}</span>
+              <div>
+                <h3
+                  className="font-serif text-lg font-bold text-[var(--foreground)] mb-3 leading-snug"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                >
+                  {o.headline}
+                </h3>
+                <p className="text-sm text-[var(--foreground-muted)] leading-relaxed">
+                  {o.body}
+                </p>
               </div>
 
-              {/* Author */}
-              <div className="pt-5 border-t border-[rgba(255,255,255,0.07)] flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full border border-[rgba(201,169,110,0.4)] flex items-center justify-center text-[11px] font-bold text-[var(--gold)] shrink-0">
-                  {t.initials}
+              <div className="pt-5 border-t border-[rgba(255,255,255,0.07)] flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full border border-[rgba(201,169,110,0.4)] flex items-center justify-center text-[10px] font-bold text-[var(--gold)] shrink-0">
+                  {o.initials}
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-[var(--foreground)]">{t.name}</p>
-                  <p className="text-xs text-[var(--foreground-muted)] mt-0.5">{t.role}</p>
-                </div>
+                <span className="text-[11px] font-semibold text-[var(--foreground-muted)] uppercase tracking-[0.1em]">
+                  {o.tag}
+                </span>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom stats strip */}
+        {/* CTA strip instead of fake stats */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="mt-px bg-[rgba(255,255,255,0.03)] grid grid-cols-2 md:grid-cols-4"
+          className="mt-px bg-[rgba(255,255,255,0.02)] border-t border-[rgba(255,255,255,0.06)] px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
         >
-          {[
-            { value: "2,400+", label: "Leads processed" },
-            { value: "₹18Cr+", label: "Deals closed" },
-            { value: "94%",    label: "Agent satisfaction" },
-            { value: "< 90s",  label: "Avg. response time" },
-          ].map((s, i) => (
-            <div key={s.label}
-              className={`px-8 py-6 ${i < 3 ? "border-r border-[rgba(255,255,255,0.06)]" : ""} ${i < 2 ? "border-b md:border-b-0 border-[rgba(255,255,255,0.06)]" : ""}`}>
-              <p className="font-serif text-2xl font-bold text-[var(--gold)]"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                {s.value}
-              </p>
-              <p className="text-[11px] text-[var(--foreground-muted)] uppercase tracking-[0.1em] mt-2">{s.label}</p>
-            </div>
-          ))}
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">
+              Be among the first agencies in India to use EstateFlow
+            </p>
+            <p className="text-xs text-[var(--foreground-muted)] mt-1">
+              Currently onboarding select agencies. Early access is free.
+            </p>
+          </div>
+          <a href="/signup" className="btn-oval shrink-0">
+            Request early access
+          </a>
         </motion.div>
       </div>
     </section>

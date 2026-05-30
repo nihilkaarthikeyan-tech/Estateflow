@@ -1,14 +1,14 @@
 const items = [
-  "🏠 12 Indian cities",
-  "⚡ AI response in 1.2s",
-  "📊 2,400+ leads processed",
-  "💰 ₹18 Crore+ deals closed",
-  "🤖 24/7 AI chatbot",
-  "📞 Voice AI agent",
-  "✅ 94% agent satisfaction",
-  "🔒 Bank-grade security",
+  "📞 24/7 Voice AI agent",
+  "⚡ Lead scored in under 2s",
+  "🤖 AI reads every enquiry automatically",
   "📱 WhatsApp lead capture",
-  "🎯 AI lead scoring 0–100",
+  "🎯 AI intent scoring 0–100",
+  "📊 6-stage pipeline tracking",
+  "🏠 Smart property matching",
+  "🔒 Bank-grade security",
+  "🔄 Automated follow-up sequences",
+  "📋 Full CRM, zero spreadsheets",
 ];
 
 export default function Ticker() {
