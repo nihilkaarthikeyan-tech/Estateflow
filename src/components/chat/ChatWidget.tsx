@@ -21,7 +21,52 @@ interface Message {
 }
 
 const WELCOME =
-  "Hi! I'm the EstateFlow AI assistant. Ask me about properties, pricing, or book a site visit. You can also click the mic and speak!";
+  "Hi 👋 I'm the EstateFlow AI assistant. Ask me about properties, pricing, or book a viewing — type or tap the mic to speak.";
+
+const QUICK_REPLIES = [
+  "Show me properties under AED 2M",
+  "What's good for Golden Visa?",
+  "Best rental yield options",
+  "Book a viewing",
+];
+
+// ── Tiny markdown renderer — handles **bold**, line breaks, and bullet lists.
+// No external dependency; keeps the bundle lean.
+function FormattedMessage({ text }: { text: string }) {
+  const lines = text.split("\n").filter((l) => l.trim() !== "");
+
+  const renderInline = (s: string) => {
+    const parts = s.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) =>
+      part.startsWith("**") && part.endsWith("**") ? (
+        <strong key={i} className="font-semibold text-[var(--foreground)]">
+          {part.slice(2, -2)}
+        </strong>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      {lines.map((line, i) => {
+        const trimmed = line.trim();
+        const isBullet = /^[-•*]\s/.test(trimmed) || /^\d+\.\s/.test(trimmed);
+        if (isBullet) {
+          const content = trimmed.replace(/^[-•*]\s/, "").replace(/^\d+\.\s/, "");
+          return (
+            <div key={i} className="flex gap-2 pl-0.5">
+              <span className="text-[var(--gold)] shrink-0 mt-0.5 text-xs">●</span>
+              <span className="flex-1">{renderInline(content)}</span>
+            </div>
+          );
+        }
+        return <p key={i}>{renderInline(trimmed)}</p>;
+      })}
+    </div>
+  );
+}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -228,19 +273,26 @@ export default function ChatWidget() {
         >
           {/* Header */}
           <div
-            className="flex items-center gap-3 px-4 py-3 shrink-0"
-            style={{ background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)" }}
+            className="flex items-center gap-3 px-4 py-3.5 shrink-0 relative"
+            style={{ background: "linear-gradient(135deg, #1a1f1d 0%, #131816 100%)", borderBottom: "1px solid var(--gold-border)" }}
           >
-            <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-              <Building2 size={16} className="text-white" />
+            <div className="relative shrink-0">
+              <div className="w-9 h-9 rounded-full flex items-center justify-center"
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)" }}>
+                <Building2 size={17} className="text-[#131816]" />
+              </div>
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#131816]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white leading-none">EstateFlow AI</p>
-              <p className="text-[11px] text-white/70 mt-0.5">Property Assistant · Voice enabled</p>
+              <p className="text-sm font-bold text-[var(--foreground)] leading-none">EstateFlow AI</p>
+              <p className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                Online · Replies instantly
+              </p>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-colors"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-white/5 transition-colors"
             >
               <X size={15} />
             </button>
@@ -254,18 +306,18 @@ export default function ChatWidget() {
             {messages.map((msg, i) => (
               <div key={i} className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
                 <div
-                  className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
+                  className={`max-w-[88%] px-3.5 py-2.5 text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "text-white rounded-br-sm"
-                      : "text-[var(--foreground)] bg-[var(--surface-2)] border border-[var(--border)] rounded-bl-sm"
+                      ? "text-[#131816] rounded-2xl rounded-br-md"
+                      : "text-[var(--foreground)] bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl rounded-bl-md"
                   }`}
                   style={
                     msg.role === "user"
-                      ? { background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)" }
+                      ? { background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", fontWeight: 500 }
                       : undefined
                   }
                 >
-                  {msg.content}
+                  {msg.role === "assistant" ? <FormattedMessage text={msg.content} /> : msg.content}
                 </div>
 
                 {/* Speak button on AI messages */}
@@ -274,7 +326,7 @@ export default function ChatWidget() {
                     onClick={() =>
                       speakingIdx === i ? stopSpeaking() : speakText(msg.content, i)
                     }
-                    className="mt-1 flex items-center gap-1 text-[10px] text-[var(--foreground-subtle)] hover:text-[var(--accent)] transition-colors"
+                    className="mt-1.5 ml-1 flex items-center gap-1 text-[10px] text-[var(--foreground-subtle)] hover:text-[var(--gold)] transition-colors"
                   >
                     {speakingIdx === i ? (
                       <><VolumeX size={11} /> Stop</>
@@ -286,10 +338,27 @@ export default function ChatWidget() {
               </div>
             ))}
 
+            {/* Quick-reply chips — only on first message */}
+            {messages.length === 1 && !loading && (
+              <div className="flex flex-wrap gap-2 mt-1">
+                {QUICK_REPLIES.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => sendMessage(q)}
+                    className="px-3 py-1.5 rounded-full text-xs text-[var(--foreground-muted)] bg-[var(--surface-2)] border border-[var(--border-strong)] hover:border-[var(--gold-border)] hover:text-[var(--gold)] transition-colors"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {loading && (
               <div className="flex items-start">
-                <div className="px-3 py-2 rounded-2xl rounded-bl-sm bg-[var(--surface-2)] border border-[var(--border)]">
-                  <Loader2 size={14} className="animate-spin text-[var(--accent)]" />
+                <div className="px-4 py-3 rounded-2xl rounded-bl-md bg-[var(--surface-2)] border border-[var(--border)] flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-bounce" style={{ animationDelay: "300ms" }} />
                 </div>
               </div>
             )}
@@ -362,10 +431,10 @@ export default function ChatWidget() {
               <button
                 onClick={() => sendMessage()}
                 disabled={!input.trim() || loading}
-                className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors disabled:opacity-40 shrink-0"
-                style={{ background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)" }}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all disabled:opacity-30 shrink-0 hover:scale-105 active:scale-95"
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)" }}
               >
-                <Send size={13} className="text-white" />
+                <Send size={14} className="text-[#131816]" />
               </button>
             </div>
             {recording && (
@@ -380,14 +449,14 @@ export default function ChatWidget() {
       {/* Floating button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-2xl shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         style={{
-          background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
-          boxShadow: "0 8px 32px var(--accent-glow)",
+          background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)",
+          boxShadow: "0 8px 32px var(--gold-glow)",
         }}
         aria-label="Open chat"
       >
-        {open ? <X size={22} className="text-white" /> : <MessageCircle size={22} className="text-white" />}
+        {open ? <X size={22} className="text-[#131816]" /> : <MessageCircle size={22} className="text-[#131816]" />}
       </button>
     </>
   );
