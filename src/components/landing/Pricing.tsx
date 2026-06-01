@@ -2,142 +2,115 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import SectionHeader from "./SectionHeader";
 
-const plans = [
-  {
-    name: "Starter",
-    price: "AED 149",
-    period: "/month",
-    description: "For lean brokerages and growing lead volumes.",
-    features: [
-      "Up to 100 leads / month",
-      "10 active listings",
-      "AI lead scoring",
-      "2 agents",
-      "Standard analytics",
-    ],
-    cta: "Start free trial",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: "AED 399",
-    period: "/month",
-    description: "For high-volume teams that need automation and WhatsApp integration.",
-    features: [
-      "Unlimited leads",
-      "Unlimited properties",
-      "AI recommendations",
-      "10 agents",
-      "Workflow automation",
-      "Advanced analytics",
-      "WhatsApp capture",
-      "Priority support",
-    ],
-    cta: "Start free trial",
-    highlighted: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    description: "For large brokerages, developers and channel partner networks.",
-    features: [
-      "Everything in Pro",
-      "Unlimited agents",
-      "Dedicated onboarding",
-      "Custom AI workflows",
-      "White label options",
-      "SLA & account support",
-    ],
-    cta: "Book a demo",
-    highlighted: false,
-  },
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const included = [
+  "AI lead capture from Bayut, Property Finder & WhatsApp",
+  "Arabic + English auto-replies, 24/7",
+  "AI lead scoring and intent analysis",
+  "Full CRM pipeline — New to Closed",
+  "Automated follow-up sequences",
+  "RERA, DLD, Trakheesi & Ejari workflows",
+  "Off-plan & payment plan tracking",
+  "Golden Visa buyer flagging",
+  "Voice AI agent for your website",
+  "Analytics and performance dashboard",
+  "Multi-agent team management",
+  "Custom branding and domain",
 ];
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="landing-section px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="pricing" className="section-rule landing-section px-6 sm:px-12">
+      <div className="max-w-[1400px] mx-auto">
         <SectionHeader
           label="Pricing"
-          title="Transparent pricing that scales with your agency"
-          description="Choose the plan that fits your team. Every plan includes AI lead capture from Bayut, Property Finder & WhatsApp, Arabic + English replies and automated follow-ups."
-          align="center"
-          className="mx-auto"
+          title="Custom-built for your agency"
+          description="We don't sell subscriptions. We build your agency a complete AI-powered CRM — tailored to your workflows, your team, and your market."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch pt-5">
-          {plans.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.45 }}
-              className={cn(
-                "pricing-card",
-                plan.highlighted && "pricing-card--highlight relative"
-              )}
-            >
-              {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-[var(--accent)] text-white shadow-lg">
-                  Most popular
-                </span>
-              )}
+        <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-px bg-[rgba(255,255,255,0.06)]">
 
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-[var(--foreground-muted)] mb-3">
-                  {plan.name}
-                </p>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-3xl font-semibold tracking-tight text-[var(--foreground)]">
-                    {plan.price}
-                  </span>
-                  {plan.period && (
-                    <span className="text-sm text-[var(--foreground-muted)]">{plan.period}</span>
-                  )}
-                </div>
-                <p className="text-sm text-[var(--foreground-muted)]">{plan.description}</p>
-              </div>
+          {/* What's included */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease }}
+            className="bg-[var(--background)] p-10 sm:p-14"
+          >
+            <p className="section-label mb-6">(What You Get)</p>
+            <ul className="space-y-4">
+              {included.map((item, i) => (
+                <motion.li
+                  key={item}
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.04, duration: 0.4 }}
+                  className="flex items-start gap-3 text-sm text-[var(--foreground-muted)]"
+                >
+                  <Check size={14} className="shrink-0 mt-0.5 text-[var(--gold)]" />
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
 
-              <div className="h-px my-6 bg-[var(--border)]" />
-
-              <ul className="flex flex-col gap-3 flex-1 min-h-[220px]">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[var(--foreground-muted)]">
-                    <Check
-                      size={14}
-                      className={cn(
-                        "shrink-0 mt-0.5",
-                        plan.highlighted ? "text-[var(--accent-light)]" : "text-[var(--foreground-subtle)]"
-                      )}
-                    />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/signup"
-                className={cn(
-                  "mt-8 inline-flex w-full items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 select-none text-sm px-6 py-3",
-                  plan.highlighted
-                    ? "bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] shadow-[0_0_20px_var(--accent-glow)] hover:shadow-[0_0_28px_var(--accent-glow)] active:scale-[0.98]"
-                    : "bg-[var(--surface-2)] text-[var(--foreground)] border border-[var(--border-strong)] hover:bg-[var(--surface-3)] hover:border-[var(--border-accent)] active:scale-[0.98]"
-                )}
+          {/* Pricing panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease }}
+            className="bg-[var(--surface)] p-10 sm:p-14 flex flex-col justify-between"
+          >
+            <div>
+              <p className="section-label mb-6">(Investment)</p>
+              <p
+                className="font-serif font-bold text-[var(--foreground)] leading-none mb-3"
+                style={{
+                  fontFamily: "var(--font-playfair), Georgia, serif",
+                  fontSize: "clamp(3rem, 6vw, 5rem)",
+                }}
               >
-                {plan.cta}
-              </Link>
-            </motion.div>
-          ))}
+                Custom
+              </p>
+              <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-sm mb-8">
+                Pricing depends on your agency size, the number of agents, and which integrations
+                you need. We scope everything during the free demo call — no surprises.
+              </p>
+
+              <div className="space-y-3 mb-10">
+                {[
+                  { label: "One-time build fee", note: "we set everything up for you" },
+                  { label: "Optional monthly support", note: "updates, new features, hosting" },
+                  { label: "Fully white-labelled", note: "your brand, your domain" },
+                ].map(item => (
+                  <div key={item.label} className="flex items-start gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] mt-1.5 shrink-0" />
+                    <div>
+                      <span className="text-sm font-semibold text-[var(--foreground)]">{item.label}</span>
+                      <span className="text-sm text-[var(--foreground-muted)]"> — {item.note}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href="#contact"
+              className="inline-flex w-full items-center justify-center py-4 rounded-full bg-[var(--foreground)] text-[var(--background)] text-[11px] font-bold uppercase tracking-[0.16em] hover:bg-[var(--gold)] transition-colors duration-200"
+            >
+              Get a Free Quote
+            </a>
+          </motion.div>
         </div>
 
         <p className="text-center text-sm text-[var(--foreground-subtle)] mt-10">
-          14-day trial included on all plans · No credit card required
+          Free demo call included · No commitment until you&apos;re ready
         </p>
       </div>
     </section>

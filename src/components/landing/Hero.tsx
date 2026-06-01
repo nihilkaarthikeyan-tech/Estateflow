@@ -128,22 +128,22 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.6, ease }}
           className="mt-10 sm:mt-14 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8"
         >
-          <Link href="/signup"
+          <a href="#contact"
             className="inline-flex items-center justify-center px-9 py-3.5 rounded-full bg-white text-[var(--background)] text-[11px] font-bold uppercase tracking-[0.16em] hover:bg-[var(--gold)] transition-colors duration-200">
-            Start Free Trial
-          </Link>
-          <Link href="#features"
+            Request a Demo
+          </a>
+          <a href="#features"
             className="inline-flex items-center justify-center px-9 py-3.5 rounded-full border border-white/40 text-white text-[11px] font-semibold uppercase tracking-[0.14em] hover:border-white hover:bg-white/10 transition-colors duration-200">
             See How It Works
-          </Link>
+          </a>
 
           <div className="hidden sm:block w-px h-8 bg-white/20" />
           <div className="flex items-center gap-5 text-[11px] text-white/50 uppercase tracking-[0.1em]">
-            <span>No card required</span>
+            <span>Built for UAE agencies</span>
             <span className="opacity-40">·</span>
-            <span>14-day trial</span>
+            <span>Free demo call</span>
             <span className="opacity-40">·</span>
-            <span>Cancel anytime</span>
+            <span>No commitment</span>
           </div>
         </motion.div>
       </div>

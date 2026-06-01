@@ -46,12 +46,12 @@ const faqs = [
     a: "The Voice AI agent is a real-time phone assistant on your website and office line. Buyers talk to an AI that answers questions, qualifies them and captures their requirements in Arabic or English — 24/7.",
   },
   {
-    q: "Can I try it before committing?",
-    a: "Absolutely. Every plan includes a 14-day free trial with full access to all features. No credit card required to start.",
+    q: "How does the process work?",
+    a: "We start with a free demo call where you show us your current workflow and we show you the system live. From there we scope the build — typically 1–2 weeks — and hand it over fully set up with your agency branding.",
   },
   {
-    q: "How long does setup take?",
-    a: "Under 10 minutes. Sign up, add your agency details, and your AI chatbot and lead capture form are live immediately. No technical setup needed.",
+    q: "Is this a subscription or a one-time build?",
+    a: "We build it for you — one-time build fee covers setup, configuration and onboarding. Optional monthly retainer covers hosting, updates and new features. No long-term lock-in.",
   },
 ];
 

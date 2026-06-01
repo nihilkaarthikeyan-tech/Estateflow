@@ -17,6 +17,7 @@ import Contact        from "@/components/landing/Contact";
 import Footer         from "@/components/landing/Footer";
 import ChatWidget     from "@/components/chat/ChatWidget";
 import VapiAgent      from "@/components/chat/VapiAgent";
+import WhatsAppFloat  from "@/components/landing/WhatsAppFloat";
 
 export default function LandingPage() {
   return (
@@ -56,6 +57,7 @@ export default function LandingPage() {
 
         <ChatWidget />
         <VapiAgent />
+        <WhatsAppFloat />
       </div>
     </SmoothScroll>
   );
