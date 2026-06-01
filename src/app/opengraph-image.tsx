@@ -112,35 +112,54 @@ export default function OGImage() {
           </div>
         </div>
 
-        {/* Bottom — value props */}
-        <div style={{ display: "flex", gap: "40px" }}>
-          {[
-            "Bayut & Property Finder capture",
-            "AI scoring in 2 seconds",
-            "Arabic + English replies",
-          ].map((t) => (
-            <div
-              key={t}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                fontSize: "20px",
-                color: "#8a847a",
-              }}
-            >
+        {/* Bottom — value props + CTA */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", gap: "32px" }}>
+            {[
+              "Bayut & PF capture",
+              "AI scoring in 2s",
+              "Arabic + English",
+            ].map((t) => (
               <div
+                key={t}
                 style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "99px",
-                  background: "#c9a96e",
                   display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  fontSize: "20px",
+                  color: "#8a847a",
                 }}
-              />
-              {t}
-            </div>
-          ))}
+              >
+                <div
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "99px",
+                    background: "#c9a96e",
+                    display: "flex",
+                  }}
+                />
+                {t}
+              </div>
+            ))}
+          </div>
+
+          {/* CTA pill */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "14px 28px",
+              borderRadius: "99px",
+              background: "linear-gradient(135deg, #c9a96e 0%, #e8c87a 100%)",
+              color: "#131816",
+              fontSize: "20px",
+              fontWeight: 700,
+            }}
+          >
+            Request a Free Demo →
+          </div>
         </div>
       </div>
     ),

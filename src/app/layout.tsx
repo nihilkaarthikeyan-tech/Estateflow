@@ -23,9 +23,9 @@ const playfair = Playfair_Display({
 const SITE_URL =
   process.env.NEXT_PUBLIC_APP_URL ?? "https://estateflowapp.vercel.app";
 
-const TITLE = "EstateFlow — AI Real Estate CRM for UAE Agencies";
+const TITLE = "EstateFlow — AI Real Estate CRM for Dubai & UAE Agencies";
 const DESCRIPTION =
-  "EstateFlow captures every Bayut, Property Finder & WhatsApp lead, scores buyer intent in 2 seconds, and replies in Arabic or English — automatically. Built for UAE real estate agencies. Never lose a hot lead again.";
+  "Capture every Bayut, Property Finder & WhatsApp lead, score buyer intent in seconds, and reply in Arabic or English — automatically. Built for UAE agencies.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
