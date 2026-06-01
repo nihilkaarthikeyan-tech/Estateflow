@@ -4,6 +4,7 @@ import Hero           from "@/components/landing/Hero";
 import Pain           from "@/components/landing/Pain";
 import StatsBar       from "@/components/landing/StatsBar";
 import Features       from "@/components/landing/Features";
+import DashboardPreview from "@/components/landing/DashboardPreview";
 import RevenueOutcome  from "@/components/landing/RevenueOutcome";
 import PortalIntegrations from "@/components/landing/PortalIntegrations";
 import AIWorkflow     from "@/components/landing/AIWorkflow";
@@ -42,6 +43,7 @@ export default function LandingPage() {
             <StatsBar />
             <RevenueOutcome />
             <Features />
+            <DashboardPreview />
             <PortalIntegrations />
             <AIWorkflow />
             <DayInLife />

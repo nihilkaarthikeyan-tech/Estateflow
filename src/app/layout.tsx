@@ -20,10 +20,46 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://estateflowapp.vercel.app";
+
+const TITLE = "EstateFlow — AI Real Estate CRM for UAE Agencies";
+const DESCRIPTION =
+  "EstateFlow captures every Bayut, Property Finder & WhatsApp lead, scores buyer intent in 2 seconds, and replies in Arabic or English — automatically. Built for UAE real estate agencies. Never lose a hot lead again.";
+
 export const metadata: Metadata = {
-  title: "EstateFlow AI — AI-Powered Real Estate CRM",
-  description:
-    "EstateFlow AI helps real estate agencies capture every WhatsApp lead, score buyer intent instantly, and automate follow-ups — so you never lose a deal again.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: [
+    "real estate CRM UAE",
+    "Dubai property CRM",
+    "AI lead capture",
+    "Bayut leads",
+    "Property Finder CRM",
+    "WhatsApp real estate",
+    "RERA CRM",
+    "Golden Visa property",
+    "real estate automation Dubai",
+  ],
+  authors: [{ name: "EstateFlow" }],
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "EstateFlow",
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: "en_AE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
