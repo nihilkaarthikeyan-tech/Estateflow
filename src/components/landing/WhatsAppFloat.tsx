@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const WA_NUMBER = "971XXXXXXXXX";
+const WA_NUMBER = "917598470890";
 const WA_MESSAGE = encodeURIComponent("Hi, I'd like to see a demo of EstateFlow for my agency.");
 
 export default function WhatsAppFloat() {

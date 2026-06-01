@@ -99,13 +99,14 @@ export default function Footer() {
                 nihilkaarthikeyan@gmail.com
               </a>
               <a
-                href="https://wa.me/971XXXXXXXXX"
+                href="https://wa.me/917598470890"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
                 className="flex items-center gap-2 text-sm text-[#25d366] hover:opacity-80 transition-opacity"
               >
                 {WA_ICON}
-                WhatsApp us
+                <span>WhatsApp</span>
               </a>
             </div>
             <div className="mt-6 space-y-2">

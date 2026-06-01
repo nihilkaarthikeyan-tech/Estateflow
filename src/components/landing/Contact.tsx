@@ -107,7 +107,7 @@ export default function Contact() {
                 Expect a WhatsApp or email from us within the hour.
               </p>
               <a
-                href="https://wa.me/971XXXXXXXXX"
+                href="https://wa.me/917598470890"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25d366] text-white text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-90 transition-opacity"
@@ -171,7 +171,7 @@ export default function Contact() {
               <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.07)] flex items-center justify-center gap-3">
                 <span className="text-[11px] text-[var(--foreground-subtle)]">Or reach us directly</span>
                 <a
-                  href="https://wa.me/971XXXXXXXXX"
+                  href="https://wa.me/917598470890"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#25d366] hover:opacity-80 transition-opacity"

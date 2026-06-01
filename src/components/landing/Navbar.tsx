@@ -59,7 +59,7 @@ export default function Navbar() {
         {/* CTA — oval pill like Elyse */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href="https://wa.me/971XXXXXXXXX"
+            href="https://wa.me/917598470890"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#25d366] opacity-80 hover:opacity-100 transition-opacity"
@@ -96,7 +96,7 @@ export default function Navbar() {
               ))}
               <div className="pt-4 border-t border-[rgba(255,255,255,0.07)] flex flex-col gap-3">
                 <a
-                  href="https://wa.me/971XXXXXXXXX"
+                  href="https://wa.me/917598470890"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileOpen(false)}
