@@ -37,28 +37,24 @@ export async function POST(req: NextRequest) {
 
       if (properties && properties.length > 0) {
         propertyContext = `\n\nAvailable Properties:\n${properties
-          .map((p) => `- ${p.title} (${p.property_type}) in ${p.city}${p.area ? ", " + p.area : ""}: ₹${Number(p.price).toLocaleString()}, ${p.bedrooms ?? "?"}BR/${p.bathrooms ?? "?"}BA`)
+          .map((p) => `- ${p.title} (${p.property_type}) in ${p.city}${p.area ? ", " + p.area : ""}: AED ${Number(p.price).toLocaleString()}, ${p.bedrooms ?? "?"}BR/${p.bathrooms ?? "?"}BA`)
           .join("\n")}`;
       }
     } catch { /* silently skip if property fetch fails */ }
 
-    const systemPrompt = `You are EstateFlow AI, a helpful real estate assistant. You help prospective buyers and renters explore properties, understand pricing, and book site visits.
+    const systemPrompt = `You are EstateFlow AI, a helpful real estate assistant for a UAE property agency. You help prospective buyers and investors explore properties, understand pricing, and book site visits.
 
 Your capabilities:
-- Answer questions about available properties, pricing, locations, and amenities
-- Help users find properties matching their requirements
-- Explain the buying/rental process in India
-- Calculate loan EMI and check affordability
+- Answer questions about available properties, pricing, locations, and amenities in the UAE
+- Help users find properties matching their requirements (budget in AED, area, bedrooms)
+- Explain the buying process in the UAE — DLD fees, RERA, off-plan, mortgage options
+- Flag Golden Visa eligibility (AED 2M+ property purchases)
 - Schedule or suggest site visits
-
-Loan/EMI calculation rules:
-- Formula: EMI = P × r × (1+r)^n / ((1+r)^n - 1)
-- Default: 20% down payment, 8.5% annual interest, 20 year tenure
-- Always show: loan amount, monthly EMI, total interest, total payment
 
 Guidelines:
 - Be concise, friendly, and professional
-- Use Indian rupee (₹) for prices
+- Always use AED for prices
+- Mention Golden Visa eligibility when a buyer's budget is AED 2M+
 - If you recommend a site visit or booking, end your message with: [ACTION:book_visit]
 - Don't make up property details not in the provided list${propertyContext}`;
 
