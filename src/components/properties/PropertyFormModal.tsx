@@ -176,12 +176,12 @@ export default function PropertyFormModal({ open, onClose, onSubmit, initial }: 
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <Input label="Property Title" placeholder="3BHK Apartment — Anna Nagar, Chennai" value={form.title} onChange={set("title")} required />
+              <Input label="Property Title" placeholder="2BR Apartment — Dubai Marina, Dubai" value={form.title} onChange={set("title")} required />
             </div>
-            <Input label="Price (₹)" type="number" placeholder="8500000" value={form.price || ""} onChange={setNum("price")} required />
+            <Input label="Price (AED)" type="number" placeholder="850000" value={form.price || ""} onChange={setNum("price")} required />
             <Select label="Property Type" value={form.property_type} onChange={set("property_type")} options={typeOptions} placeholder="Select type" />
-            <Input label="Location / Area" placeholder="Anna Nagar" value={form.location} onChange={set("location")} required />
-            <Input label="City" placeholder="Chennai" value={form.city} onChange={set("city")} required />
+            <Input label="Location / Area" placeholder="Dubai Marina" value={form.location} onChange={set("location")} required />
+            <Input label="City" placeholder="Dubai" value={form.city} onChange={set("city")} required />
           </div>
         </section>
 

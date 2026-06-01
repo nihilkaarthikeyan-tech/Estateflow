@@ -8,7 +8,8 @@ import Image from "next/image";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 // Free Unsplash luxury property photo — like Elyse contact section
-const CONTACT_IMG = "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80";
+// Burj Al Arab — premium Dubai property panel
+const CONTACT_IMG = "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1200&q=80";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", agency: "", phone: "" });
@@ -102,10 +103,10 @@ export default function Contact() {
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 {[
-                  { field: "name",   label: "Full Name",   type: "text",  placeholder: "Rajesh Menon",          required: true },
-                  { field: "email",  label: "Email",       type: "email", placeholder: "rajesh@agency.com",      required: true },
-                  { field: "phone",  label: "Phone",       type: "tel",   placeholder: "+91 98765 43210",        required: true },
-                  { field: "agency", label: "Agency Name", type: "text",  placeholder: "Prestige Homes",         required: false },
+                  { field: "name",   label: "Full Name",   type: "text",  placeholder: "Ahmed Al-Mansouri",      required: true },
+                  { field: "email",  label: "Email",       type: "email", placeholder: "ahmed@agency.ae",        required: true },
+                  { field: "phone",  label: "Phone",       type: "tel",   placeholder: "+971 50 123 4567",       required: true },
+                  { field: "agency", label: "Agency Name", type: "text",  placeholder: "Prime Properties Dubai", required: false },
                 ].map(({ field, label, type, placeholder, required }) => (
                   <div key={field}>
                     <label className="input-label">{label}</label>

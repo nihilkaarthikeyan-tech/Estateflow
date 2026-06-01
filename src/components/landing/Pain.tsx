@@ -6,14 +6,14 @@ import Image from "next/image";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 // Free Unsplash images
-const INTERIOR_IMG = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80";
+const INTERIOR_IMG = "https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=1200&q=80";
 
 const pains = [
   {
     num: "01",
     title: "You respond in 3 hours.",
     titleItalic: "They signed elsewhere in 2.",
-    body: "A buyer WhatsApped at 11pm asking about a 3BHK. Your agent saw it at 9am. The lead had already signed with the competitor who replied at 11:04pm — with an AI.",
+    body: "A buyer WhatsApped at 11pm asking about a 2BR apartment in Dubai Marina. Your agent saw it at 9am. The lead had already signed with the competitor who replied at 11:04pm — with an AI.",
     stat: "78%",
     statLabel: "of leads go to the first agent who responds",
   },
@@ -59,7 +59,7 @@ export default function Pain() {
             className="cinematic-reveal font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight tracking-[-0.02em]"
           >
             Your agency is silently<br />
-            <em className="font-normal" style={{ fontStyle: "italic", color: "#f87171" }}>losing ₹10L+ every month</em>
+            <em className="font-normal" style={{ fontStyle: "italic", color: "#f87171" }}>losing AED 50,000+ every month</em>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}

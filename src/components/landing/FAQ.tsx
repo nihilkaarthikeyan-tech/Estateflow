@@ -7,11 +7,31 @@ import { Plus, Minus } from "lucide-react";
 const faqs = [
   {
     q: "What is EstateFlow AI?",
-    a: "EstateFlow is an AI-first real estate CRM for agencies, developers and brokerages. It automates lead capture, qualification, property matching and follow-ups from one dashboard.",
+    a: "EstateFlow is an AI-first real estate CRM built for UAE agencies, brokers and developers. It captures leads from Bayut, Property Finder, Dubizzle and WhatsApp, qualifies them, matches properties and automates follow-ups — all from one RERA-ready dashboard.",
+  },
+  {
+    q: "Which lead sources does it connect to?",
+    a: "Bayut, Property Finder, Dubizzle, your own website, WhatsApp and direct calls all flow into one inbox. Every enquiry is auto-captured, deduplicated, scored 0–100 and assigned to the right agent — nothing sits unanswered.",
+  },
+  {
+    q: "Does the AI reply in Arabic?",
+    a: "Yes. The AI reads and replies in Arabic and English — plus Russian, Hindi and Chinese — so your international buyers get an instant answer in their own language, day or night.",
+  },
+  {
+    q: "Is EstateFlow RERA and DLD ready?",
+    a: "It's built around UAE workflows. Listings keep their Trakheesi permit number, your BRN and agency details stay attached to every deal, tenancies map to Ejari and off-plan to Oqood — so your pipeline stays audit-ready with the DLD.",
+  },
+  {
+    q: "Can it handle off-plan and payment plans?",
+    a: "Yes. Track off-plan launches from developers like Emaar, DAMAC, Sobha and Nakheel against each lead, with payment-plan stages and handover dates kept in one view.",
+  },
+  {
+    q: "Can it flag Golden Visa-eligible buyers?",
+    a: "Yes. Buyers with an AED 2M+ budget are automatically flagged as Golden Visa-eligible, so your agents can lead with 10-year residency — not just the property.",
   },
   {
     q: "How does AI lead analysis work?",
-    a: "WhatsApp and web leads are parsed by AI to extract budget, location, property type, urgency and intent. The platform then scores each lead 0–100 and suggests the best next step for your agent.",
+    a: "Portal, WhatsApp and web leads are parsed by AI to extract budget (in AED), area, property type, urgency and intent. The platform scores each lead 0–100 and suggests the best next step for your agent.",
   },
   {
     q: "Can multiple agents and branches use it?",
@@ -22,16 +42,12 @@ const faqs = [
     a: "Yes. EstateFlow uses row-level security so each agency's data is completely isolated. All data is encrypted in transit and at rest. We never share your data with any third party.",
   },
   {
-    q: "Does EstateFlow support WhatsApp leads?",
-    a: "Yes. WhatsApp enquiries can be forwarded or integrated — they are processed exactly like web form leads, with full AI analysis and CRM sync.",
+    q: "What is the Voice AI agent?",
+    a: "The Voice AI agent is a real-time phone assistant on your website and office line. Buyers talk to an AI that answers questions, qualifies them and captures their requirements in Arabic or English — 24/7.",
   },
   {
     q: "Can I try it before committing?",
     a: "Absolutely. Every plan includes a 14-day free trial with full access to all features. No credit card required to start.",
-  },
-  {
-    q: "What is the Voice AI agent?",
-    a: "The Voice AI agent is a real-time phone assistant on your website. Visitors click a button and talk to an AI that answers questions, qualifies them and captures their requirements — 24/7.",
   },
   {
     q: "How long does setup take?",

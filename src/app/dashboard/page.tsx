@@ -22,7 +22,7 @@ const urgencyVariant: Record<LeadUrgency, "danger" | "warning" | "default"> = {
   high: "danger", medium: "warning", low: "default",
 };
 
-const todayLabel = new Date().toLocaleDateString("en-IN", {
+const todayLabel = new Date().toLocaleDateString("en-AE", {
   weekday: "long", day: "numeric", month: "long",
 });
 
@@ -98,7 +98,7 @@ export default function DashboardOverview() {
         <motion.div {...fade(-0.05)} className="relative overflow-hidden rounded-2xl border border-[var(--border)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=60"
+            src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=60"
             alt=""
             className="absolute inset-0 w-full h-full object-cover opacity-[0.2]"
           />

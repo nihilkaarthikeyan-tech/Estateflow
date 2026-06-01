@@ -75,7 +75,7 @@ export default function ChatWidget() {
     if (!SR) return;
 
     const rec = new SR();
-    rec.lang = "en-IN";
+    rec.lang = "en-AE";
     rec.continuous = false;
     rec.interimResults = false;
 

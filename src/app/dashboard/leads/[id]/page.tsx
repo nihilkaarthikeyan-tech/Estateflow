@@ -71,9 +71,9 @@ function timeAgo(d: string) {
 }
 
 function formatPrice(p: number) {
-  if (p >= 1e7) return `₹${(p / 1e7).toFixed(p % 1e7 === 0 ? 0 : 2)} Cr`;
-  if (p >= 1e5) return `₹${(p / 1e5).toFixed(p % 1e5 === 0 ? 0 : 1)}L`;
-  return `₹${p.toLocaleString("en-IN")}`;
+  if (p >= 1e6) return `AED ${(p / 1e6).toFixed(p % 1e6 === 0 ? 0 : 2)}M`;
+  if (p >= 1e3) return `AED ${(p / 1e3).toFixed(0)}K`;
+  return `AED ${p.toLocaleString("en-AE")}`;
 }
 
 export default function LeadDetailPage() {
@@ -394,7 +394,7 @@ export default function LeadDetailPage() {
               {lead.visit_date && !visitSaved && (
                 <p className="text-xs text-[var(--success)] mb-2 flex items-center gap-1.5">
                   <CheckCircle2 size={11} />
-                  Scheduled: {new Date(lead.visit_date).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
+                  Scheduled: {new Date(lead.visit_date).toLocaleString("en-AE", { dateStyle: "medium", timeStyle: "short" })}
                 </p>
               )}
               <input

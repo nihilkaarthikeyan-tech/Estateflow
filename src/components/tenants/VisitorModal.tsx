@@ -57,7 +57,7 @@ export default function VisitorModal({ open, onClose, onSubmit, initial, tenantI
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
           <Input label="Visitor Name" placeholder="John Doe" value={form.visitor_name} onChange={set("visitor_name")} required />
-          <Input label="Phone" placeholder="+91 98765 43210" value={form.visitor_phone} onChange={set("visitor_phone")} />
+          <Input label="Phone" placeholder="+971 50 123 4567" value={form.visitor_phone} onChange={set("visitor_phone")} />
         </div>
         <Input label="Purpose of Visit" placeholder="Family visit, delivery, etc." value={form.purpose} onChange={set("purpose")} />
         <div className="flex flex-col gap-1">

@@ -5,13 +5,13 @@ import Image from "next/image";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const TESTIMONIALS_BG = "https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=1920&q=80";
+const TESTIMONIALS_BG = "https://images.unsplash.com/photo-1624317938116-5050f2b0965c?auto=format&fit=crop&w=1920&q=80";
 
 const outcomes = [
   {
     metric: "3 hrs → 90s",
     headline: "Response time that wins deals",
-    body: "Most Indian agencies respond to leads in 3–6 hours. The buyer has already talked to two competitors by then. EstateFlow's AI replies instantly — extracts requirements and scores intent before your agent even opens their phone.",
+    body: "Most UAE agencies respond to leads in 3–6 hours. The buyer has already talked to two competitors by then. EstateFlow's AI replies instantly — extracts requirements and scores intent before your agent even opens their phone.",
     tag: "Lead Response",
     initials: "LR",
   },
@@ -133,7 +133,7 @@ export default function Testimonials() {
         >
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">
-              Be among the first agencies in India to use EstateFlow
+              Be among the first agencies in the UAE to use EstateFlow
             </p>
             <p className="text-xs text-[var(--foreground-muted)] mt-1">
               Currently onboarding select agencies. Early access is free.

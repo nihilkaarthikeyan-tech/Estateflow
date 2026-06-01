@@ -59,7 +59,7 @@ export default function TenantPortalPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=60"
+      <img src="https://images.unsplash.com/photo-1459787915554-b34915863013?auto=format&fit=crop&w=1920&q=60"
         alt="" className="fixed inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none" />
 
       <header className="relative z-10 border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-sm sticky top-0">
@@ -92,7 +92,7 @@ export default function TenantPortalPage() {
                   <label className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider block mb-1.5">
                     <Phone size={11} className="inline mr-1" />Your Phone Number
                   </label>
-                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 98765 43210" required
+                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+971 50 123 4567" required
                     className="w-full bg-[var(--surface-2)] border border-[var(--border-strong)] text-[var(--foreground)] placeholder:text-[var(--foreground-subtle)] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-colors" />
                 </div>
                 {error && <p className="text-sm text-[var(--danger)] bg-[var(--danger)]/10 px-3 py-2 rounded-xl">{error}</p>}
@@ -136,9 +136,9 @@ export default function TenantPortalPage() {
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {[
-                      { label: "Monthly Rent", value: `₹${data.lease.monthly_rent.toLocaleString("en-IN")}` },
-                      { label: "Lease Start", value: new Date(data.lease.start_date).toLocaleDateString("en-IN") },
-                      { label: "Lease End", value: new Date(data.lease.end_date).toLocaleDateString("en-IN") },
+                      { label: "Monthly Rent", value: `AED ${data.lease.monthly_rent.toLocaleString("en-AE")}` },
+                      { label: "Lease Start", value: new Date(data.lease.start_date).toLocaleDateString("en-AE") },
+                      { label: "Lease End", value: new Date(data.lease.end_date).toLocaleDateString("en-AE") },
                     ].map(({ label, value }) => (
                       <div key={label} className="bg-[var(--surface-2)] rounded-xl p-3">
                         <p className="text-xs text-[var(--foreground-subtle)] mb-0.5">{label}</p>
@@ -178,7 +178,7 @@ export default function TenantPortalPage() {
                           {t.status.replace("_", " ")}
                         </span>
                       </div>
-                      <p className="text-xs text-[var(--foreground-muted)]">{new Date(t.created_at).toLocaleDateString("en-IN")}</p>
+                      <p className="text-xs text-[var(--foreground-muted)]">{new Date(t.created_at).toLocaleDateString("en-AE")}</p>
                     </div>
                   ))}
                 </div>

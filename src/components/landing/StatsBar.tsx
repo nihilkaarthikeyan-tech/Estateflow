@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const STATS_IMG = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=80";
+const STATS_IMG = "https://images.unsplash.com/photo-1462007895615-c8c073bebcd8?auto=format&fit=crop&w=1920&q=80";
 
 const stats = [
   {
@@ -103,7 +103,7 @@ export default function StatsBar() {
             </p>
             <div className="flex items-center gap-3 shrink-0">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-white/40 uppercase tracking-[0.14em]">Built for Indian real estate teams</span>
+              <span className="text-xs text-white/40 uppercase tracking-[0.14em]">Built for UAE real estate teams</span>
             </div>
           </motion.div>
         </div>

@@ -5,9 +5,9 @@ import { BedDouble, Bath, Maximize2, MapPin, Search } from "lucide-react";
 import ChatWidget from "@/components/chat/ChatWidget";
 
 function formatPrice(price: number) {
-  if (price >= 1e7) return `₹${(price / 1e7).toFixed(price % 1e7 === 0 ? 0 : 2)} Cr`;
-  if (price >= 1e5) return `₹${(price / 1e5).toFixed(price % 1e5 === 0 ? 0 : 1)}L`;
-  return `₹${price.toLocaleString("en-IN")}`;
+  if (price >= 1e6) return `AED ${(price / 1e6).toFixed(price % 1e6 === 0 ? 0 : 2)}M`;
+  if (price >= 1e3) return `AED ${(price / 1e3).toFixed(price % 1e3 === 0 ? 0 : 0)}K`;
+  return `AED ${price.toLocaleString("en-AE")}`;
 }
 
 const typeLabel: Record<string, string> = {
@@ -73,7 +73,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
               <input
                 name="city"
                 defaultValue={params.city ?? ""}
-                placeholder="Chennai, Bangalore…"
+                placeholder="Dubai, Abu Dhabi…"
                 className="bg-[var(--surface-2)] border border-[var(--border-strong)] text-[var(--foreground)] placeholder:text-[var(--foreground-subtle)] rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--accent)] transition-colors"
               />
             </div>
@@ -105,7 +105,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
               </select>
             </div>
             <div className="flex flex-col gap-1 min-w-[140px]">
-              <label className="text-xs text-[var(--foreground-muted)] font-medium">Max Price (₹)</label>
+              <label className="text-xs text-[var(--foreground-muted)] font-medium">Max Price (AED)</label>
               <input
                 name="max_price"
                 type="number"
@@ -163,6 +163,11 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
                       {typeLabel[property.property_type] ?? property.property_type}
                     </span>
                   )}
+                  {property.price >= 2000000 && (
+                    <span className="absolute top-3 right-3 text-[10px] font-bold bg-[rgba(201,169,110,0.92)] text-black px-2 py-0.5 rounded-full backdrop-blur-sm">
+                      Golden Visa ✓
+                    </span>
+                  )}
                 </div>
 
                 {/* Info */}
@@ -175,7 +180,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
                     {property.location}{property.city ? `, ${property.city}` : ""}
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-[var(--foreground-muted)] mb-4">
+                  <div className="flex items-center gap-3 text-xs text-[var(--foreground-muted)] mb-3">
                     {property.bedrooms > 0 && (
                       <span className="flex items-center gap-1"><BedDouble size={11} /> {property.bedrooms} Beds</span>
                     )}
@@ -186,6 +191,22 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
                       <span className="flex items-center gap-1"><Maximize2 size={11} /> {property.area.toLocaleString()} sqft</span>
                     )}
                   </div>
+
+                  {/* ROI badges */}
+                  {(() => {
+                    const yieldPct = property.bedrooms <= 0 ? 8.2 : property.bedrooms === 1 ? 7.8 : property.bedrooms === 2 ? 7.1 : property.bedrooms === 3 ? 6.3 : 5.2;
+                    const monthlyRent = Math.round((property.price * yieldPct / 100) / 12);
+                    return (
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          {yieldPct}% Yield
+                        </span>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-2)] text-[var(--foreground-muted)] border border-[var(--border)]">
+                          AED {monthlyRent.toLocaleString("en-AE")}/mo
+                        </span>
+                      </div>
+                    );
+                  })()}
 
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-[var(--accent)]">{formatPrice(property.price)}</span>

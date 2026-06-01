@@ -46,7 +46,7 @@ export default function BookVisitPage() {
     <div className="min-h-screen bg-[var(--background)] relative overflow-hidden">
       {/* Background image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=60"
+      <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=60"
         alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 to-[var(--background)] pointer-events-none" />
 
@@ -122,8 +122,8 @@ export default function BookVisitPage() {
               {/* Name + Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { label: "Full Name *", key: "visitor_name" as const, type: "text", placeholder: "Rahul Sharma" },
-                  { label: "Phone *", key: "visitor_phone" as const, type: "tel", placeholder: "+91 98765 43210" },
+                  { label: "Full Name *", key: "visitor_name" as const, type: "text", placeholder: "Mohammed Al-Rashidi" },
+                  { label: "Phone *", key: "visitor_phone" as const, type: "tel", placeholder: "+971 50 123 4567" },
                 ].map(({ label, key, type, placeholder }) => (
                   <div key={key}>
                     <label className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider block mb-1.5">{label}</label>
@@ -136,7 +136,7 @@ export default function BookVisitPage() {
               {/* Email */}
               <div>
                 <label className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider block mb-1.5">Email (optional)</label>
-                <input type="email" placeholder="rahul@email.com" value={form.visitor_email} onChange={set("visitor_email")}
+                <input type="email" placeholder="mohammed@email.com" value={form.visitor_email} onChange={set("visitor_email")}
                   className="w-full bg-[var(--surface-2)] border border-[var(--border-strong)] text-[var(--foreground)] placeholder:text-[var(--foreground-subtle)] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-colors" />
               </div>
 

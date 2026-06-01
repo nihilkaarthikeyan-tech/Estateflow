@@ -6,9 +6,9 @@ import { Plus, Search, Phone, Mail, Home, Loader2, Pencil, Trash2, UserSquare2, 
 
 const TENANT_IMGS = [
   "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=70",
-  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=70",
+  "https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=600&q=70",
   "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=70",
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=70",
+  "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=600&q=70",
 ];
 import { createClient } from "@/lib/supabase/client";
 import TopBar from "@/components/dashboard/TopBar";

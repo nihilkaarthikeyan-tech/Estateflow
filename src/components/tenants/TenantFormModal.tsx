@@ -54,10 +54,10 @@ export default function TenantFormModal({ open, onClose, onSubmit, initial, prop
   return (
     <Modal open={open} onClose={onClose} title={initial ? "Edit Tenant" : "Add Tenant"} size="md">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input label="Full Name" placeholder="Ravi Kumar" value={form.name} onChange={set("name")} required />
+        <Input label="Full Name" placeholder="Khalid Al-Mansouri" value={form.name} onChange={set("name")} required />
         <div className="grid grid-cols-2 gap-4">
-          <Input label="Phone" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} />
-          <Input label="Email" type="email" placeholder="ravi@email.com" value={form.email} onChange={set("email")} />
+          <Input label="Phone" placeholder="+971 50 123 4567" value={form.phone} onChange={set("phone")} />
+          <Input label="Email" type="email" placeholder="khalid@email.ae" value={form.email} onChange={set("email")} />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <Input label="Unit / Flat No." placeholder="A-204" value={form.unit_number} onChange={set("unit_number")} />

@@ -4,9 +4,13 @@ import Hero           from "@/components/landing/Hero";
 import Pain           from "@/components/landing/Pain";
 import StatsBar       from "@/components/landing/StatsBar";
 import Features       from "@/components/landing/Features";
+import RevenueOutcome  from "@/components/landing/RevenueOutcome";
+import PortalIntegrations from "@/components/landing/PortalIntegrations";
 import AIWorkflow     from "@/components/landing/AIWorkflow";
 import DayInLife      from "@/components/landing/DayInLife";
+import InvestorOffPlan from "@/components/landing/InvestorOffPlan";
 import Testimonials   from "@/components/landing/Testimonials";
+import Compliance     from "@/components/landing/Compliance";
 import Comparison     from "@/components/landing/Comparison";
 import FAQ            from "@/components/landing/FAQ";
 import Contact        from "@/components/landing/Contact";
@@ -35,10 +39,14 @@ export default function LandingPage() {
             <Hero />
             <Pain />
             <StatsBar />
+            <RevenueOutcome />
             <Features />
+            <PortalIntegrations />
             <AIWorkflow />
             <DayInLife />
+            <InvestorOffPlan />
             <Testimonials />
+            <Compliance />
             <Comparison />
             <FAQ />
             <Contact />

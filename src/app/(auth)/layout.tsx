@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Building2, Zap, Shield, BarChart3 } from "lucide-react";
 
-const AUTH_BG = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80";
+const AUTH_BG = "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1200&q=80";
 
 const features = [
   { icon: Zap, text: "AI-powered lead analysis in seconds" },
@@ -138,9 +138,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                 A
               </div>
               <div>
-                <p className="text-xs font-semibold text-[var(--foreground)]">Arjun Mehta</p>
+                <p className="text-xs font-semibold text-[var(--foreground)]">Omar Al-Farsi</p>
                 <p className="text-[10px] text-[var(--foreground-subtle)]">
-                  MD, Prestige Properties, Mumbai
+                  MD, Elite Properties, Dubai
                 </p>
               </div>
             </div>

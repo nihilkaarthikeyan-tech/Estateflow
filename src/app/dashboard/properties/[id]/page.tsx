@@ -25,9 +25,9 @@ const statusBadge: Record<PropertyStatus, "success" | "warning" | "default" | "d
 };
 
 function formatPrice(price: number) {
-  if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`;
-  if (price >= 100000) return `₹${(price / 100000).toFixed(0)} L`;
-  return `₹${price.toLocaleString("en-IN")}`;
+  if (price >= 1000000) return `AED ${(price / 1000000).toFixed(2)}M`;
+  if (price >= 1000) return `AED ${(price / 1000).toFixed(0)}K`;
+  return `AED ${price.toLocaleString("en-AE")}`;
 }
 
 export default function PropertyDetailPage() {
@@ -175,7 +175,7 @@ export default function PropertyDetailPage() {
                 <div className="w-full h-full relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+                    src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1200&q=80"
                     alt="Property placeholder"
                     className="w-full h-full object-cover opacity-25"
                   />
@@ -301,7 +301,7 @@ export default function PropertyDetailPage() {
               </div>
               <iframe
                 title="Property location"
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.location}, ${property.city ?? ""}, India`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.location}, ${property.city ?? ""}, UAE`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 className="w-full h-56 border-0"
                 loading="lazy"
               />
@@ -388,7 +388,7 @@ export default function PropertyDetailPage() {
                 const emi = r > 0 ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : loan / n;
                 const totalPay = emi * n;
                 const totalInt = totalPay - loan;
-                const fmt = (v: number) => `₹${Math.round(v).toLocaleString("en-IN")}`;
+                const fmt = (v: number) => `AED ${Math.round(v).toLocaleString("en-AE")}`;
                 return (
                   <div className="px-4 pb-4 flex flex-col gap-3 border-t border-[var(--border)]">
                     <div className="pt-3 flex flex-col gap-3">
@@ -471,9 +471,9 @@ export default function PropertyDetailPage() {
                 </div>
                 <div className="flex flex-col gap-4">
                   {[
-                    { label: "Visitor Name *", key: "name", type: "text", placeholder: "Rahul Sharma" },
-                    { label: "Phone *", key: "phone", type: "tel", placeholder: "+91 98765 43210" },
-                    { label: "Email", key: "email", type: "email", placeholder: "rahul@email.com" },
+                    { label: "Visitor Name *", key: "name", type: "text", placeholder: "Mohammed Al-Rashidi" },
+                    { label: "Phone *", key: "phone", type: "tel", placeholder: "+971 50 123 4567" },
+                    { label: "Email", key: "email", type: "email", placeholder: "mohammed@email.ae" },
                   ].map(({ label, key, type, placeholder }) => (
                     <div key={key}>
                       <label className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider block mb-1.5">{label}</label>

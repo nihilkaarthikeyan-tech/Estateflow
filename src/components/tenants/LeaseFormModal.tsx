@@ -89,8 +89,8 @@ export default function LeaseFormModal({ open, onClose, onSubmit, initial, tenan
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <Input label="Monthly Rent (₹)" type="number" placeholder="25000" value={String(form.monthly_rent)} onChange={setNum("monthly_rent")} required />
-          <Input label="Security Deposit (₹)" type="number" placeholder="50000" value={String(form.deposit)} onChange={setNum("deposit")} />
+          <Input label="Monthly Rent (AED)" type="number" placeholder="8000" value={String(form.monthly_rent)} onChange={setNum("monthly_rent")} required />
+          <Input label="Security Deposit (AED)" type="number" placeholder="16000" value={String(form.deposit)} onChange={setNum("deposit")} />
         </div>
         <Select label="Status" value={form.status} onChange={set("status")} options={statusOptions} />
         {error && <p className="text-sm text-[var(--danger)] bg-[var(--danger)]/10 px-3 py-2 rounded-lg">{error}</p>}

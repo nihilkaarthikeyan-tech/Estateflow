@@ -25,9 +25,9 @@ const statusBadge: Record<PropertyStatus, "success" | "warning" | "default" | "d
 };
 
 function formatPrice(price: number) {
-  if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)}Cr`;
-  if (price >= 100000) return `₹${(price / 100000).toFixed(0)}L`;
-  return `₹${price.toLocaleString("en-IN")}`;
+  if (price >= 1000000) return `AED ${(price / 1000000).toFixed(2)}M`;
+  if (price >= 1000) return `AED ${(price / 1000).toFixed(0)}K`;
+  return `AED ${price.toLocaleString("en-AE")}`;
 }
 
 export default function PropertiesPage() {
@@ -139,7 +139,7 @@ export default function PropertiesPage() {
             <div className="relative w-24 h-24 rounded-2xl overflow-hidden border border-[var(--border)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=300&q=80"
+                src="https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=300&q=80"
                 alt=""
                 className="w-full h-full object-cover opacity-30"
               />
@@ -188,7 +188,7 @@ export default function PropertiesPage() {
                       <>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
+                          src="https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=800&q=80"
                           alt="Property placeholder"
                           className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-300"
                         />

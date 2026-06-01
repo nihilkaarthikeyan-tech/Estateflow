@@ -9,7 +9,7 @@ import SectionHeader from "./SectionHeader";
 const plans = [
   {
     name: "Starter",
-    price: "₹2,999",
+    price: "AED 149",
     period: "/month",
     description: "For lean brokerages and growing lead volumes.",
     features: [
@@ -24,7 +24,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "₹7,999",
+    price: "AED 399",
     period: "/month",
     description: "For high-volume teams that need automation and WhatsApp integration.",
     features: [
@@ -65,7 +65,7 @@ export default function Pricing() {
         <SectionHeader
           label="Pricing"
           title="Transparent pricing that scales with your agency"
-          description="Choose the plan that fits your team. Every plan includes AI lead capture, WhatsApp integration and automated follow-ups."
+          description="Choose the plan that fits your team. Every plan includes AI lead capture from Bayut, Property Finder & WhatsApp, Arabic + English replies and automated follow-ups."
           align="center"
           className="mx-auto"
         />

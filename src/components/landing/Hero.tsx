@@ -7,7 +7,8 @@ import Image from "next/image";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 // Free Unsplash luxury real estate images — no API key needed
-const HERO_IMG = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80";
+// Dubai skyline at sunset — full-bleed hero
+const HERO_IMG = "https://images.unsplash.com/photo-1607414851776-f2fcc379fb48?auto=format&fit=crop&w=1920&q=80";
 
 export default function Hero() {
   return (
@@ -42,12 +43,12 @@ export default function Hero() {
           <em>while you sleep.</em>
         </p>
         <p className="text-sm text-white/70 leading-relaxed">
-          EstateFlow reads every WhatsApp enquiry, scores buyer intent in 2 seconds,
-          and sends the first follow-up — automatically.
+          EstateFlow reads every Bayut, Property Finder &amp; WhatsApp enquiry, scores buyer
+          intent in 2 seconds, and replies in Arabic or English — automatically.
         </p>
         <div className="mt-5 flex items-center justify-end gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11px] text-emerald-400 uppercase tracking-[0.12em]">Early access · India</span>
+          <span className="text-[11px] text-emerald-400 uppercase tracking-[0.12em]">Early access · UAE</span>
         </div>
       </motion.div>
 
@@ -61,7 +62,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="section-label mb-6 sm:mb-8 text-white/50"
         >
-          (AI-Powered Real Estate CRM)
+          (AI Real Estate CRM · UAE)
         </motion.p>
 
         {/* Giant serif headline — clips over the photo */}

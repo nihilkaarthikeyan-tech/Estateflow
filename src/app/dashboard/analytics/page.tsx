@@ -84,7 +84,7 @@ export default function AnalyticsPage() {
   // Format daily date labels for chart
   const volumeData = (data?.dailyVolume ?? []).map((d, i) => ({
     ...d,
-    label: i % 5 === 0 ? new Date(d.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : "",
+    label: i % 5 === 0 ? new Date(d.date).toLocaleDateString("en-AE", { month: "short", day: "numeric" }) : "",
   }));
 
   return (
@@ -101,7 +101,7 @@ export default function AnalyticsPage() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=1920&q=60"
+            src="https://images.unsplash.com/photo-1624317938116-5050f2b0965c?auto=format&fit=crop&w=1920&q=60"
             alt=""
             className="absolute inset-0 w-full h-full object-cover opacity-[0.18]"
           />

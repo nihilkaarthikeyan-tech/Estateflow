@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { X, Check } from "lucide-react";
 
-const COMPARISON_BG = "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1920&q=80";
+const COMPARISON_BG = "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1920&q=80";
 
 const rows = [
+  { label: "Portal leads (Bayut/PF)", before: "Checked manually, hours late", after: "Auto-captured & scored in seconds" },
   { label: "Lead response time",    before: "2–3 hours (if lucky)",        after: "Under 90 seconds, automated" },
+  { label: "Buyer's language",      before: "English only, replies delayed", after: "Instant Arabic & English replies" },
   { label: "Data entry",            before: "Manual, full of errors",       after: "AI extracts everything instantly" },
   { label: "Follow-ups",            before: "Forgotten 60% of the time",    after: "Never missed — fully automated" },
   { label: "After-hours enquiries", before: "Missed completely",            after: "AI handles 24/7, qualifies live" },

@@ -316,8 +316,8 @@ export default function TenantDetailPage() {
                             {[
                               { label: "Start Date", value: new Date(lease.start_date).toLocaleDateString() },
                               { label: "End Date", value: new Date(lease.end_date).toLocaleDateString() },
-                              { label: "Monthly Rent", value: `₹${lease.monthly_rent.toLocaleString()}` },
-                              { label: "Security Deposit", value: `₹${(lease.deposit ?? 0).toLocaleString()}` },
+                              { label: "Monthly Rent", value: `AED ${lease.monthly_rent.toLocaleString("en-AE")}` },
+                              { label: "Security Deposit", value: `AED ${(lease.deposit ?? 0).toLocaleString("en-AE")}` },
                             ].map(({ label, value }) => (
                               <div key={label}>
                                 <p className="text-xs text-[var(--foreground-subtle)] mb-0.5">{label}</p>
@@ -373,7 +373,7 @@ export default function TenantDetailPage() {
                           <p className="text-sm font-medium text-[var(--foreground)] truncate">{doc.name.replace(/^\d+_/, "")}</p>
                           {doc.created_at && (
                             <p className="text-xs text-[var(--foreground-subtle)]">
-                              {new Date(doc.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                              {new Date(doc.created_at).toLocaleDateString("en-AE", { day: "numeric", month: "short", year: "numeric" })}
                             </p>
                           )}
                         </div>

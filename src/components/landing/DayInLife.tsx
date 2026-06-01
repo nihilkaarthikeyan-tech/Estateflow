@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { X, CheckCircle2, MessageCircle, Brain, Bell, Calendar, TrendingUp } from "lucide-react";
 
-const DAYINLIFE_BG = "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1920&q=80";
+const DAYINLIFE_BG = "https://images.unsplash.com/photo-1459787915554-b34915863013?auto=format&fit=crop&w=1920&q=80";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -12,10 +12,10 @@ const timeline = [
   {
     time: "7:02 AM",
     event: "Buyer WhatsApps at midnight",
-    detail: '"Hi, looking for 3BHK ready to move in Chennai, budget ₹90L. Urgent."',
+    detail: '"Hi, looking for 2BR apartment in Dubai Marina, budget AED 120K. Urgent."',
     without: {
       text: "You see it at 9:30 AM. Buyer already signed with competitor at 8 AM.",
-      sub: "Lead lost. ₹1.8L commission gone.",
+      sub: "Lead lost. AED 14,000 commission gone.",
       color: "#ef4444",
     },
     with: {
@@ -29,14 +29,14 @@ const timeline = [
   {
     time: "9:00 AM",
     event: "3 more enquiries come in",
-    detail: "Rohit — 2BHK · Priya — Villa · Sneha — Plot. All from different sources.",
+    detail: "Khalid — 2BR · Fatima — Villa · James — Studio. All from different sources.",
     without: {
       text: "Agent manually copies each into Excel. 45 minutes wasted. 1 enquiry missed.",
-      sub: "₹0 revenue from 45 minutes of data entry.",
+      sub: "AED 0 revenue from 45 minutes of data entry.",
       color: "#ef4444",
     },
     with: {
-      text: "All 3 auto-imported, scored, and prioritised. Rohit at top: 87/100, call him first.",
+      text: "All 3 auto-imported, scored, and prioritised. Khalid at top: 87/100, call him first.",
       sub: "Agent spends 45 min on calls instead. 2 site visits booked.",
       color: "#16a34a",
     },
@@ -70,7 +70,7 @@ const timeline = [
       color: "#ef4444",
     },
     with: {
-      text: "AI brief ready: budget ₹90L, prefers top floor, kids' school nearby, loan pre-approved.",
+      text: "AI brief ready: budget AED 120K, prefers high floor, sea view, mortgage pre-approved.",
       sub: "You walk in confident. Buyer impressed. Deal moves to negotiation.",
       color: "#16a34a",
     },
@@ -83,12 +83,12 @@ const timeline = [
     detail: "What did today actually produce?",
     without: {
       text: "3 hours on data entry. 2 leads gone cold. 0 new site visits. 1 deal lost at 7 AM.",
-      sub: "Revenue opportunity lost: ₹3.2L+ in commission.",
+      sub: "Revenue opportunity lost: AED 25,000+ in commission.",
       color: "#ef4444",
     },
     with: {
       text: "4 site visits booked. 2 deals progressing. 1 offer accepted. AI running follow-ups overnight.",
-      sub: "Revenue in pipeline: ₹11L+ commission. You leave at 6 PM.",
+      sub: "Revenue in pipeline: AED 90,000+ commission. You leave at 6 PM.",
       color: "#16a34a",
     },
     icon: TrendingUp,
@@ -211,7 +211,7 @@ export default function DayInLife() {
           {/* Property image — right third, visible on sm+ */}
           <div className="hidden sm:block absolute inset-y-0 right-0 w-[38%] overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
+              src="https://images.unsplash.com/photo-1543579596-2c11997c7706?auto=format&fit=crop&w=800&q=80"
               alt=""
               fill
               className="object-cover object-center opacity-20"
@@ -227,12 +227,12 @@ export default function DayInLife() {
                 The difference isn&apos;t talent. It&apos;s the system.
               </p>
               <p className="text-sm text-[var(--foreground-muted)]">
-                Top agents in India aren&apos;t working harder — they&apos;re working smarter. EstateFlow is the
+                Top agents in the UAE aren&apos;t working harder — they&apos;re working smarter. EstateFlow is the
                 unfair advantage your competitors don&apos;t want you to have.
               </p>
             </div>
             <div className="text-center sm:text-right">
-              <p className="text-5xl sm:text-6xl font-extrabold gradient-text" style={{ fontFamily: "var(--font-playfair), Georgia, serif", lineHeight: 1 }}>₹11L+</p>
+              <p className="text-5xl sm:text-6xl font-extrabold gradient-text" style={{ fontFamily: "var(--font-playfair), Georgia, serif", lineHeight: 1 }}>AED 90K+</p>
               <p className="text-xs text-[var(--foreground-muted)] mt-2">Extra commission in pipeline<br/>per agent, per month</p>
             </div>
           </div>

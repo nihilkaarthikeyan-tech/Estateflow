@@ -123,7 +123,7 @@ export default function VisitsPage() {
         {/* Banner */}
         <div className="relative overflow-hidden rounded-2xl border border-[var(--border)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1920&q=60"
+          <img src="https://images.unsplash.com/photo-1459787915554-b34915863013?auto=format&fit=crop&w=1920&q=60"
             alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.18]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--surface)] via-[var(--surface)]/80 to-transparent pointer-events-none" />
           <div className="relative flex items-center justify-between px-6 py-5">
@@ -237,7 +237,7 @@ export default function VisitsPage() {
                   {/* Date */}
                   <div>
                     <p className="text-sm font-medium text-[var(--foreground)]">
-                      {new Date(visit.visit_date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      {new Date(visit.visit_date).toLocaleDateString("en-AE", { day: "numeric", month: "short", year: "numeric" })}
                     </p>
                     <p className="text-xs text-[var(--foreground-muted)] flex items-center gap-1 mt-0.5">
                       <Clock size={10} /> {visit.visit_time}
@@ -284,9 +284,9 @@ export default function VisitsPage() {
             </div>
             <form onSubmit={handleAdd} className="flex flex-col gap-4">
               {[
-                { label: "Visitor Name *", key: "visitor_name", type: "text", placeholder: "Rahul Sharma" },
-                { label: "Phone *", key: "visitor_phone", type: "tel", placeholder: "+91 98765 43210" },
-                { label: "Email", key: "visitor_email", type: "email", placeholder: "rahul@email.com" },
+                { label: "Visitor Name *", key: "visitor_name", type: "text", placeholder: "Mohammed Al-Rashidi" },
+                { label: "Phone *", key: "visitor_phone", type: "tel", placeholder: "+971 50 123 4567" },
+                { label: "Email", key: "visitor_email", type: "email", placeholder: "mohammed@email.ae" },
               ].map(({ label, key, type, placeholder }) => (
                 <div key={key}>
                   <label className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider block mb-1.5">{label}</label>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 
-const FOOTER_BG = "https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=1920&q=80";
+const FOOTER_BG = "https://images.unsplash.com/photo-1590264539175-39df72442833?auto=format&fit=crop&w=1920&q=80";
 
 export default function Footer() {
   return (
@@ -36,7 +36,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-xs">
-              The AI-powered CRM built for modern real estate agencies across India.
+              The AI-powered CRM built for modern real estate agencies across the UAE.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export default function Footer() {
             © {new Date().getFullYear()} EstateFlow AI. All rights reserved.
           </p>
           <p className="text-xs text-[var(--foreground-subtle)]">
-            Built for Indian real estate · Powered by OpenAI · Vapi.ai · Supabase
+            Built for UAE real estate · Powered by OpenAI · Vapi.ai · Supabase
           </p>
         </div>
       </div>

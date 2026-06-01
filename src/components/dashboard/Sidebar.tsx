@@ -140,7 +140,7 @@ export default function Sidebar() {
         <div className="mx-3 mb-2 rounded-xl overflow-hidden relative" style={{ height: "76px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=70"
+            src="https://images.unsplash.com/photo-1611577810610-642f8ac05c32?auto=format&fit=crop&w=400&q=70"
             alt=""
             className="w-full h-full object-cover"
           />
