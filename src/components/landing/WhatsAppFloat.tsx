@@ -10,13 +10,13 @@ export default function WhatsAppFloat() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+    <div className="fixed bottom-6 left-6 z-50 flex items-center gap-3">
       <AnimatePresence>
         {hovered && (
           <motion.div
-            initial={{ opacity: 0, x: 8 }}
+            initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 8 }}
+            exit={{ opacity: 0, x: -8 }}
             transition={{ duration: 0.18 }}
             className="bg-[#1a1a1a] border border-[rgba(255,255,255,0.1)] text-white text-xs font-medium px-3 py-2 rounded-xl whitespace-nowrap shadow-lg"
           >
