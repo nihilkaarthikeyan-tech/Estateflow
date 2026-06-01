@@ -45,19 +45,25 @@ export async function POST(req: NextRequest) {
         </div>
       `;
 
-      await fetch("https://api.resend.com/emails", {
+      const emailRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "EstateFlow <onboarding@resend.dev>",
+          from: "EstateFlow <noreply@nexoraa.digital>",
           to: "nihilkaarthikeyan@gmail.com",
+          reply_to: email,
           subject: `Demo request: ${name}${agency ? ` — ${agency}` : ""}`,
           html,
         }),
       });
+
+      // Surface (but don't fail on) email errors — the lead is already saved.
+      if (!emailRes.ok) {
+        console.error("Resend email failed:", emailRes.status, await emailRes.text());
+      }
     }
 
     return NextResponse.json({ ok: true });
