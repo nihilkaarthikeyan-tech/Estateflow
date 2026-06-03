@@ -58,7 +58,9 @@ export interface Lead {
   notes?: string;
   source?: string;
   ai_analyzed?: boolean;
+  golden_visa?: boolean;
   visit_date?: string;
+  closed_at?: string;
   created_at: string;
   updated_at?: string;
 }

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Search, Brain, Phone, LayoutList,
   Kanban, Filter, Trash2, Pencil, Eye,
-  MapPin, Clock, Users,
+  MapPin, Clock, Users, Crown,
 } from "lucide-react";
 import Link from "next/link";
 import TopBar from "@/components/dashboard/TopBar";
@@ -70,6 +70,7 @@ export default function LeadsPage() {
   const [view, setView] = useState<ViewMode>("table");
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<LeadFilters>(defaultLeadFilters);
+  const [goldenOnly, setGoldenOnly] = useState(false);
 
   const [formOpen, setFormOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Lead | null>(null);
@@ -100,7 +101,7 @@ export default function LeadsPage() {
     await updateLead(id, { status: stage });
   }
 
-  const displayed = search
+  const searched = search
     ? leads.filter((l) =>
         (l.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
         (l.phone ?? "").includes(search) ||
@@ -109,7 +110,9 @@ export default function LeadsPage() {
       )
     : leads;
 
-  const hasFilters = filters.stage || filters.urgency;
+  const displayed = goldenOnly ? searched.filter((l) => l.golden_visa) : searched;
+
+  const hasFilters = filters.stage || filters.urgency || goldenOnly;
 
   return (
     <div className="flex flex-col flex-1">
@@ -145,8 +148,20 @@ export default function LeadsPage() {
               options={urgencyOptions}
               className="text-xs py-1.5 w-32"
             />
+            <button
+              onClick={() => setGoldenOnly((v) => !v)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+              style={
+                goldenOnly
+                  ? { background: "rgba(212,175,55,0.14)", color: "#d4af37", border: "1px solid rgba(212,175,55,0.35)" }
+                  : { background: "var(--surface)", color: "var(--foreground-muted)", border: "1px solid var(--border)" }
+              }
+              title="Show only Golden Visa eligible leads (AED 2M+)"
+            >
+              <Crown size={13} /> Golden Visa
+            </button>
             {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={() => { setFilters(defaultLeadFilters); fetchLeads(); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setFilters(defaultLeadFilters); setGoldenOnly(false); fetchLeads(); }}>
                 <Filter size={13} /> Clear
               </Button>
             )}
@@ -247,8 +262,9 @@ export default function LeadsPage() {
                           {(lead.name ?? "?")[0].toUpperCase()}
                         </div>
                         <div className="min-w-0">
-                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--accent)] transition-colors block truncate">
+                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--accent)] transition-colors  truncate inline-flex items-center gap-1.5">
                             {lead.name ?? "Unknown"}
+                            {lead.golden_visa && <Crown size={12} style={{ color: "#d4af37" }} aria-label="Golden Visa eligible" />}
                           </Link>
                           {lead.phone && (
                             <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mt-0.5">
@@ -291,8 +307,9 @@ export default function LeadsPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--accent)] transition-colors truncate">
+                          <Link href={`/dashboard/leads/${lead.id}`} className="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--accent)] transition-colors truncate inline-flex items-center gap-1.5">
                             {lead.name ?? "Unknown"}
+                            {lead.golden_visa && <Crown size={12} style={{ color: "#d4af37" }} aria-label="Golden Visa eligible" />}
                           </Link>
                           <span className="text-xs font-medium px-2 py-0.5 rounded-full shrink-0"
                             style={{ background: `${stageColor[lead.status as LeadStage]}15`, color: stageColor[lead.status as LeadStage] }}>

@@ -6,9 +6,10 @@ const SYSTEM_PROMPT = `You are a real estate lead analyst. Extract structured in
 
 Return ONLY valid JSON with exactly these fields:
 - summary: A concise, professional one-sentence summary of the customer's requirement
-- budget: The budget mentioned (e.g. "₹90 Lakhs", "2 Crore") or null if not mentioned
-- location: The preferred city or area (e.g. "Chennai", "Bangalore, Whitefield") or null
-- property_type: The type of property (e.g. "3BHK Apartment", "Villa", "Plot") or null
+- budget: The budget mentioned (e.g. "AED 2.5M", "AED 1.6 Million") or null if not mentioned
+- budget_aed: The budget as a plain AED number (e.g. 2500000) or null if no budget is mentioned. Convert any units (M/million, K) to a full number.
+- location: The preferred city or area (e.g. "Dubai Marina", "Arabian Ranches") or null
+- property_type: The type of property (e.g. "2BHK Apartment", "Villa", "Off-plan") or null
 - urgency: One of "high", "medium", or "low" based on language urgency cues
 - buyer_intent: One of "serious", "researching", or "comparing" based on commitment signals
 
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     });
 
     const raw = completion.choices[0].message.content ?? "{}";
-    let extracted: Record<string, string | null>;
+    let extracted: Record<string, string | number | null>;
 
     try {
       extracted = JSON.parse(raw);
@@ -65,13 +66,22 @@ export async function POST(req: NextRequest) {
       ? (extracted.buyer_intent as string)
       : "researching";
 
+    // UAE Golden Visa property threshold is AED 2M. Auto-flag qualifying buyers
+    // so they can be tracked in the dedicated pipeline.
+    const budgetAed =
+      typeof extracted.budget_aed === "number"
+        ? extracted.budget_aed
+        : Number(extracted.budget_aed);
+    const golden_visa = Number.isFinite(budgetAed) && budgetAed >= 2_000_000;
+
     const updatePayload = {
       summary: extracted.summary ?? null,
-      budget: extracted.budget ?? null,
-      location: extracted.location ?? null,
-      property_type: extracted.property_type ?? null,
+      budget: (extracted.budget as string | null) ?? null,
+      location: (extracted.location as string | null) ?? null,
+      property_type: (extracted.property_type as string | null) ?? null,
       urgency,
       buyer_intent,
+      golden_visa,
       ai_analyzed: true,
     };
 

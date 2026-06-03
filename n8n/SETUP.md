@@ -7,6 +7,21 @@
 | 01 - WhatsApp Lead Capture | WATI sends webhook | Captures WhatsApp message → AI analyzes → saves lead in CRM → sends auto-reply |
 | 02 - Follow-up Sequence | Daily 9 AM Mon-Sat | Finds leads needing follow-up → generates AI message → sends via WhatsApp → logs in CRM |
 | 03 - Rent Reminder | Daily 10 AM | Finds tenants with rent due in 3 days → sends WhatsApp reminder with amount + date |
+| 04 - Visit Confirmation | WATI / booking webhook | Confirms a site-visit booking instantly via WhatsApp |
+| 05 - Visit Reminder | Daily 8 AM | Reminds every visitor whose site visit is tomorrow |
+| 06 - Off-Plan Payment Reminder | Daily 10 AM | Finds off-plan installments due in 7 days → WhatsApps the buyer the amount, project & bank details → marks reminder sent |
+| 07 - Lease Renewal Alert | Daily 9 AM | Finds leases expiring in 90 days → asks the tenant to renew on WhatsApp → notifies the agent in-app |
+| 08 - Lead Re-engagement | Weekly Mon 10 AM | Finds leads inactive 60+ days → sends a WhatsApp re-engagement message → logs it in the CRM |
+| 09 - Post-Sale Referral | Daily 11 AM | Finds leads that closed 30 days ago → WhatsApps a referral request → stamps it so it's only asked once |
+
+> Workflows 06–09 reuse the **same env vars and the same `x-n8n-secret` API auth** as 01–05.
+> Just import them and activate — no new credentials needed. Each reads from a new
+> `/api/n8n/*` endpoint: `installments-due`, `lease-renewals`, `cold-leads`, `referral-followups`.
+
+> **Database:** before activating, run the new migrations in Supabase SQL Editor:
+> `supabase/migrations/20260603_payment_schedules.sql` and
+> `supabase/migrations/20260603_lead_lifecycle.sql`
+> (or re-run `supabase/schema-single-user.sql`, which now includes them).
 
 ---
 
@@ -79,6 +94,12 @@ In n8n → Settings → Variables → add:
    - `n8n/workflows/01-whatsapp-lead-capture.json`
    - `n8n/workflows/02-followup-sequence.json`
    - `n8n/workflows/03-rent-reminder.json`
+   - `n8n/workflows/04-visit-confirmation.json`
+   - `n8n/workflows/05-visit-reminder.json`
+   - `n8n/workflows/06-offplan-payment-reminder.json`
+   - `n8n/workflows/07-lease-renewal-alert.json`
+   - `n8n/workflows/08-lead-reengagement.json`
+   - `n8n/workflows/09-postsale-referral.json`
 
 ---
 

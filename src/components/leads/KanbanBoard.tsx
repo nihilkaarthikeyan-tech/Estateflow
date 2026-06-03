@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Phone, MapPin, ChevronRight } from "lucide-react";
+import { Brain, Phone, MapPin, ChevronRight, Crown } from "lucide-react";
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
 import type { Lead, LeadStage, LeadUrgency } from "@/types";
@@ -69,6 +69,17 @@ export default function KanbanBoard({ leads, onStageChange }: KanbanBoardProps) 
                         </Badge>
                       )}
                     </div>
+
+                    {/* Golden Visa flag (AED 2M+ buyers) */}
+                    {lead.golden_visa && (
+                      <div
+                        className="inline-flex items-center gap-1 mb-2 px-1.5 py-0.5 rounded-full text-[10px] font-semibold"
+                        style={{ background: "rgba(212,175,55,0.14)", color: "#d4af37", border: "1px solid rgba(212,175,55,0.35)" }}
+                      >
+                        <Crown size={9} />
+                        Golden Visa
+                      </div>
+                    )}
 
                     {/* Requirement summary */}
                     {(lead.summary || lead.raw_message) && (

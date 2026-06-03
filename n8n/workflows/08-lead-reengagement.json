@@ -1,0 +1,136 @@
+{
+  "name": "08 - Lead Re-engagement Campaign",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 10 * * 1" }] }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Monday 10AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/n8n/cold-leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "x-n8n-secret", "value": "={{ $env.N8N_SECRET }}" }]
+        },
+        "options": {}
+      },
+      "id": "get-cold-leads",
+      "name": "Get Cold Leads (60+ Days)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "has-cold-leads",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "has-cold-leads-check",
+      "name": "Any Cold Leads?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": { "fieldToSplitOut": "leads", "options": {} },
+      "id": "split-leads",
+      "name": "Split Into Individual Leads",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\nconst firstName = (lead.name || 'there').split(' ')[0];\nconst area = lead.location || 'the areas you were exploring';\nconst type = lead.property_type ? lead.property_type.toLowerCase() : 'properties';\n\nconst message = `Hi ${firstName}, it's been a while since we spoke about ${area}. We've just listed a few new ${type} that match your requirement perfectly — would you be interested to take a look? Reply here and I'll send the details. 🏠`;\n\nconst phone = (lead.phone || '').replace('+', '');\n\nreturn [{ json: { ...lead, message, phone } }];"
+      },
+      "id": "build-message",
+      "name": "Build Re-engagement Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://live-mt-server.wati.io/{{ $env.WATI_ACCOUNT_ID }}/api/v1/sendSessionMessage/{{ $json.phone }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WATI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{ "name": "messageText", "value": "={{ $json.message }}" }]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-message",
+      "name": "Send WhatsApp Re-engagement",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NEXT_PUBLIC_SB_URL }}/rest/v1/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "lead_id", "value": "={{ $('Split Into Individual Leads').item.json.id }}" },
+            { "name": "message", "value": "={{ $('Build Re-engagement Message').item.json.message }}" },
+            { "name": "direction", "value": "outbound" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "log-conversation",
+      "name": "Log Re-engagement In CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 200]
+    }
+  ],
+  "connections": {
+    "Weekly Monday 10AM": { "main": [[{ "node": "Get Cold Leads (60+ Days)", "type": "main", "index": 0 }]] },
+    "Get Cold Leads (60+ Days)": { "main": [[{ "node": "Any Cold Leads?", "type": "main", "index": 0 }]] },
+    "Any Cold Leads?": { "main": [[{ "node": "Split Into Individual Leads", "type": "main", "index": 0 }], []] },
+    "Split Into Individual Leads": { "main": [[{ "node": "Build Re-engagement Message", "type": "main", "index": 0 }]] },
+    "Build Re-engagement Message": { "main": [[{ "node": "Send WhatsApp Re-engagement", "type": "main", "index": 0 }]] },
+    "Send WhatsApp Re-engagement": { "main": [[{ "node": "Log Re-engagement In CRM", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Runs every Monday at 10 AM. Finds leads inactive for 60+ days that are still in an active stage, sends a WhatsApp re-engagement message referencing their original requirement, and logs it in the CRM (which also resets their cold timer)."
+  }
+}

@@ -73,6 +73,11 @@ create table if not exists public.leads (
   notes            text,
   visit_date       timestamp with time zone,
   ai_analyzed      boolean default false,
+  -- AED 2M+ Golden Visa pipeline flag (auto-set by AI lead analysis)
+  golden_visa      boolean default false,
+  -- Post-sale referral lifecycle (Workflow 09)
+  closed_at                  timestamp with time zone,
+  referral_followup_sent_at  timestamp with time zone,
   created_at       timestamp with time zone default now(),
   updated_at       timestamp with time zone default now()
 );
@@ -138,6 +143,29 @@ create table if not exists public.leases (
   status           text not null default 'active'
                    check (status in ('active', 'expired', 'terminated')),
   created_at       timestamp with time zone default now()
+);
+
+-- ─────────────────────────────────────────────
+-- TABLE: payment_schedules
+-- Off-plan installment milestones (Workflow 06 — Off-Plan Payment Reminder)
+-- ─────────────────────────────────────────────
+create table if not exists public.payment_schedules (
+  id                uuid primary key default uuid_generate_v4(),
+  property_id       uuid references public.properties(id) on delete set null,
+  lead_id           uuid references public.leads(id) on delete set null,
+  buyer_name        text not null,
+  buyer_phone       text not null,
+  project_name      text not null,
+  developer         text,
+  installment_label text,
+  amount            numeric not null,
+  due_date          date not null,
+  bank_details      text,
+  status            text not null default 'pending'
+                    check (status in ('pending', 'paid', 'overdue')),
+  reminder_sent_at  timestamp with time zone,
+  created_at        timestamp with time zone default now(),
+  updated_at        timestamp with time zone default now()
 );
 
 -- ─────────────────────────────────────────────
@@ -216,6 +244,34 @@ drop trigger if exists set_updated_at_maintenance on public.maintenance_tickets;
 create trigger set_updated_at_maintenance
   before update on public.maintenance_tickets
   for each row execute procedure public.handle_updated_at();
+
+drop trigger if exists set_updated_at_payment_schedules on public.payment_schedules;
+create trigger set_updated_at_payment_schedules
+  before update on public.payment_schedules
+  for each row execute procedure public.handle_updated_at();
+
+-- ─────────────────────────────────────────────
+-- LEAD CLOSED_AT TRIGGER
+-- Stamps closed_at when a lead enters 'closed', clears it (and the referral
+-- guard) if it moves back out. Drives Workflow 09 (Post-Sale Referral).
+-- ─────────────────────────────────────────────
+create or replace function public.handle_lead_closed_at()
+returns trigger as $$
+begin
+  if new.status = 'closed' and (old.status is distinct from 'closed') then
+    new.closed_at = now();
+  elsif new.status <> 'closed' then
+    new.closed_at = null;
+    new.referral_followup_sent_at = null;
+  end if;
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists set_lead_closed_at on public.leads;
+create trigger set_lead_closed_at
+  before update on public.leads
+  for each row execute procedure public.handle_lead_closed_at();
 
 -- ─────────────────────────────────────────────
 -- AUTO-CREATE PROFILE TRIGGER
@@ -330,6 +386,13 @@ create policy "Authenticated users can manage leases"
   on public.leases for all
   using (auth.uid() is not null);
 
+-- ── payment_schedules ──
+alter table public.payment_schedules enable row level security;
+
+create policy "Authenticated users can manage payment schedules"
+  on public.payment_schedules for all
+  using (auth.uid() is not null);
+
 -- ── maintenance_tickets ──
 alter table public.maintenance_tickets enable row level security;
 
@@ -367,6 +430,10 @@ create index if not exists idx_properties_status on public.properties(status);
 create index if not exists idx_leads_status on public.leads(status);
 create index if not exists idx_leads_urgency on public.leads(urgency);
 create index if not exists idx_leads_assigned on public.leads(assigned_to);
+create index if not exists idx_leads_closed_at on public.leads(closed_at);
+create index if not exists idx_leads_golden_visa on public.leads(golden_visa) where golden_visa = true;
+create index if not exists idx_payment_schedules_due on public.payment_schedules(due_date);
+create index if not exists idx_payment_schedules_status on public.payment_schedules(status);
 create index if not exists idx_conversations_lead on public.conversations(lead_id);
 create index if not exists idx_notifications_user on public.notifications(user_id);
 create index if not exists idx_visits_date on public.visits(visit_date);

@@ -1,0 +1,136 @@
+{
+  "name": "07 - Lease Renewal Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 9 * * *" }] }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily 9AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/n8n/lease-renewals",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "x-n8n-secret", "value": "={{ $env.N8N_SECRET }}" }]
+        },
+        "options": {}
+      },
+      "id": "get-renewals",
+      "name": "Get Leases Expiring In 90 Days",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "has-renewals",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "has-renewals-check",
+      "name": "Any Leases Expiring?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": { "fieldToSplitOut": "renewals", "options": {} },
+      "id": "split-renewals",
+      "name": "Split Into Individual Leases",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst firstName = (item.tenant_name || 'there').split(' ')[0];\nconst unit = item.unit_number ? `Unit ${item.unit_number}` : (item.property_title || 'your unit');\nconst endDate = new Date(item.end_date).toLocaleDateString('en-AE', {\n  day: 'numeric', month: 'long', year: 'numeric'\n});\n\nconst tenantMsg = `Hi ${firstName}, your lease for ${unit} expires on ${endDate} — that's 90 days away. Would you like to renew? Reply YES and our team will contact you to arrange the details. 🏠`;\n\nconst agentNote = `Lease renewal due: ${item.tenant_name}${item.unit_number ? ' (Unit ' + item.unit_number + ')' : ''} expires ${endDate}. Tenant has been sent a renewal request.`;\n\nconst phone = (item.tenant_phone || '').replace('+', '');\n\nreturn [{ json: { ...item, tenant_message: tenantMsg, agent_note: agentNote, phone } }];"
+      },
+      "id": "build-messages",
+      "name": "Build Messages",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://live-mt-server.wati.io/{{ $env.WATI_ACCOUNT_ID }}/api/v1/sendSessionMessage/{{ $json.phone }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WATI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{ "name": "messageText", "value": "={{ $json.tenant_message }}" }]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-tenant",
+      "name": "Send Tenant Renewal Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NEXT_PUBLIC_SB_URL }}/rest/v1/notifications",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "user_id", "value": "={{ $('Split Into Individual Leases').item.json.agent_user_id }}" },
+            { "name": "message", "value": "={{ $json.agent_note }}" },
+            { "name": "type", "value": "info" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "notify-agent",
+      "name": "Notify Agent In CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 200]
+    }
+  ],
+  "connections": {
+    "Daily 9AM": { "main": [[{ "node": "Get Leases Expiring In 90 Days", "type": "main", "index": 0 }]] },
+    "Get Leases Expiring In 90 Days": { "main": [[{ "node": "Any Leases Expiring?", "type": "main", "index": 0 }]] },
+    "Any Leases Expiring?": { "main": [[{ "node": "Split Into Individual Leases", "type": "main", "index": 0 }], []] },
+    "Split Into Individual Leases": { "main": [[{ "node": "Build Messages", "type": "main", "index": 0 }]] },
+    "Build Messages": { "main": [[{ "node": "Send Tenant Renewal Request", "type": "main", "index": 0 }]] },
+    "Send Tenant Renewal Request": { "main": [[{ "node": "Notify Agent In CRM", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Runs every day at 9 AM. Finds active leases that expire in exactly 90 days, WhatsApps the tenant asking if they want to renew, and drops an in-app notification for the listing agent."
+  }
+}

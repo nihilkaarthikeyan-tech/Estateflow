@@ -1,0 +1,134 @@
+{
+  "name": "06 - Off-Plan Payment Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 10 * * *" }] }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily 10AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ESTATEFLOW_URL }}/api/n8n/installments-due",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "x-n8n-secret", "value": "={{ $env.N8N_SECRET }}" }]
+        },
+        "options": {}
+      },
+      "id": "get-installments",
+      "name": "Get Installments Due In 7 Days",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "has-installments",
+              "leftValue": "={{ $json.count }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "has-installments-check",
+      "name": "Any Installments Due?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": { "fieldToSplitOut": "installments", "options": {} },
+      "id": "split-installments",
+      "name": "Split Into Individual Buyers",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst firstName = (item.buyer_name || 'there').split(' ')[0];\nconst amount = Number(item.amount).toLocaleString('en-AE');\nconst dueDate = new Date(item.due_date).toLocaleDateString('en-AE', {\n  day: 'numeric', month: 'long', year: 'numeric'\n});\nconst label = item.installment_label ? `${item.installment_label} ` : 'next installment ';\nconst bank = item.bank_details ? `\\n\\nPayment details:\\n${item.bank_details}` : '';\n\nconst message = `Dear ${firstName},\\n\\nYour ${label}of AED ${amount} for ${item.project_name} is due on ${dueDate}.\\n\\nPlease ensure payment is made on time to avoid penalties.${bank}\\n\\nThank you! 🏗️`;\n\nconst phone = (item.buyer_phone || '').replace('+', '');\n\nreturn [{ json: { ...item, whatsapp_message: message, phone } }];"
+      },
+      "id": "build-reminder",
+      "name": "Build Reminder Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://live-mt-server.wati.io/{{ $env.WATI_ACCOUNT_ID }}/api/v1/sendSessionMessage/{{ $json.phone }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WATI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{ "name": "messageText", "value": "={{ $json.whatsapp_message }}" }]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "send-reminder",
+      "name": "Send WhatsApp Reminder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.NEXT_PUBLIC_SB_URL }}/rest/v1/payment_schedules?id=eq.{{ $('Split Into Individual Buyers').item.json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $env.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "reminder_sent_at", "value": "={{ $now.toISO() }}" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "mark-sent",
+      "name": "Mark Reminder Sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 200]
+    }
+  ],
+  "connections": {
+    "Daily 10AM": { "main": [[{ "node": "Get Installments Due In 7 Days", "type": "main", "index": 0 }]] },
+    "Get Installments Due In 7 Days": { "main": [[{ "node": "Any Installments Due?", "type": "main", "index": 0 }]] },
+    "Any Installments Due?": { "main": [[{ "node": "Split Into Individual Buyers", "type": "main", "index": 0 }], []] },
+    "Split Into Individual Buyers": { "main": [[{ "node": "Build Reminder Message", "type": "main", "index": 0 }]] },
+    "Build Reminder Message": { "main": [[{ "node": "Send WhatsApp Reminder", "type": "main", "index": 0 }]] },
+    "Send WhatsApp Reminder": { "main": [[{ "node": "Mark Reminder Sent", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Runs every day at 10 AM. Finds off-plan installments due in 7 days, sends each buyer a WhatsApp reminder with the amount, project, due date and bank details, then marks the reminder as sent to avoid duplicates."
+  }
+}

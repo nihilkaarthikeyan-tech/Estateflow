@@ -7,7 +7,7 @@ import {
   ArrowLeft, Brain, Phone, Mail, MapPin, Wallet,
   Home, Clock, Send, Pencil, Trash2, Loader2,
   AlertCircle, CheckCircle2, User, RefreshCw, Building2,
-  BedDouble, Maximize2, Sparkles, CalendarDays, UserCheck,
+  BedDouble, Maximize2, Sparkles, CalendarDays, UserCheck, Crown,
 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -197,6 +197,18 @@ export default function LeadDetailPage() {
     if (data) setMessages((prev) => [...prev, data as Message]);
     setNewMsg("");
     setSendingMsg(false);
+  }
+
+  async function toggleGoldenVisa() {
+    if (!lead) return;
+    const supabase = createClient();
+    const { data } = await supabase
+      .from("leads")
+      .update({ golden_visa: !lead.golden_visa })
+      .eq("id", id)
+      .select()
+      .single();
+    setLead(data as Lead);
   }
 
   async function handleAgentAssign(agentId: string) {
@@ -477,6 +489,24 @@ export default function LeadDetailPage() {
                     </span>
                   </div>
                 )}
+
+                {/* Golden Visa eligibility (AED 2M+) — auto-flagged by AI, toggleable */}
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-[var(--foreground-muted)] flex items-center gap-1.5">
+                    <Crown size={12} style={{ color: "#d4af37" }} /> Golden Visa
+                  </span>
+                  <button
+                    onClick={toggleGoldenVisa}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-colors"
+                    style={
+                      lead.golden_visa
+                        ? { background: "rgba(212,175,55,0.14)", color: "#d4af37", border: "1px solid rgba(212,175,55,0.35)" }
+                        : { background: "var(--surface-3)", color: "var(--foreground-muted)", border: "1px solid var(--border-strong)" }
+                    }
+                  >
+                    {lead.golden_visa ? "Eligible" : "Not flagged"}
+                  </button>
+                </div>
               </div>
 
               {lead.raw_message && (
