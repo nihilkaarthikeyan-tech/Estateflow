@@ -29,11 +29,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     // Sanitize all inputs
-    const name        = sanitizeField(body.name, 150) || "Unknown";
-    const phone       = sanitizeField(body.phone, 20);
-    const email       = sanitizeField(body.email, 200);
-    const raw_message = sanitizeField(body.raw_message, 2000);
-    const source      = sanitizeField(body.source, 50) || "web_form";
+    const name           = sanitizeField(body.name, 150) || "Unknown";
+    const phone          = sanitizeField(body.phone, 20);
+    const email          = sanitizeField(body.email, 200);
+    const raw_message    = sanitizeField(body.raw_message, 2000);
+    const source         = sanitizeField(body.source, 50) || "web_form";
+    const organization_id = typeof body.organization_id === "string" ? body.organization_id : null;
     const webhook_secret = typeof body.webhook_secret === "string" ? body.webhook_secret : "";
 
     // Webhook secret check — only enforce if WEBHOOK_SECRET is set in env
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
       email: email || null,
       raw_message,
       source,
+      organization_id,
       status: "new",
       urgency: "medium",
       buyer_intent: "researching",
