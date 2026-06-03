@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
+
+const LEAD_COLUMNS =
+  "name, phone, budget, location, property_type, urgency, buyer_intent, summary, status, raw_message";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,11 +18,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
     }
 
+    // Dashboard calls this with a logged-in session (RLS-scoped to their org).
+    // n8n calls it server-to-server with no session, so fall back to the
+    // service-role client — same pattern as the other /api/n8n endpoints.
     const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    const { data: lead, error } = await supabase
+    const db = user
+      ? supabase
+      : createServiceClient(
+          process.env.NEXT_PUBLIC_SB_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+
+    const { data: lead, error } = await db
       .from("leads")
-      .select("name, phone, budget, location, property_type, urgency, buyer_intent, summary, status, raw_message")
+      .select(LEAD_COLUMNS)
       .eq("id", leadId)
       .single();
 

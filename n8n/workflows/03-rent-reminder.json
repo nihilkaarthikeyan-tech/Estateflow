@@ -66,7 +66,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first().json;\nconst firstName = item.tenant_name.split(' ')[0];\nconst rent = Number(item.monthly_rent).toLocaleString('en-IN');\nconst dueDate = new Date(item.due_date).toLocaleDateString('en-IN', {\n  day: 'numeric', month: 'long', year: 'numeric'\n});\nconst unit = item.unit_number ? ` for Unit ${item.unit_number}` : '';\n\nconst message = `Dear ${firstName},\\n\\nThis is a friendly reminder that your monthly rent of ₹${rent}${unit} is due on ${dueDate}.\\n\\nPlease ensure timely payment to avoid any late charges.\\n\\nFor any queries, please contact us.\\n\\nThank you! 🏠`;\n\nreturn [{ json: { ...item, whatsapp_message: message } }];"
+        "jsCode": "const item = $input.first().json;\nconst firstName = item.tenant_name.split(' ')[0];\nconst rent = Number(item.monthly_rent).toLocaleString('en-AE');\nconst dueDate = new Date(item.due_date).toLocaleDateString('en-AE', {\n  day: 'numeric', month: 'long', year: 'numeric'\n});\nconst unit = item.unit_number ? ` for Unit ${item.unit_number}` : '';\n\nconst message = `Dear ${firstName},\\n\\nThis is a friendly reminder that your monthly rent of AED ${rent}${unit} is due on ${dueDate}.\\n\\nPlease ensure timely payment to avoid any late charges.\\n\\nFor any queries, please contact us.\\n\\nThank you! 🏠`;\n\nreturn [{ json: { ...item, whatsapp_message: message } }];"
       },
       "id": "build-reminder",
       "name": "Build Reminder Message",
