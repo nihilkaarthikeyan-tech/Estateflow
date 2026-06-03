@@ -62,6 +62,42 @@ const features = [
     statLabel: "Pipeline stages tracked",
     img: "https://images.unsplash.com/photo-1624317938116-5050f2b0965c?auto=format&fit=crop&w=800&q=80",
   },
+  {
+    num: "07",
+    title: "Golden Visa",
+    titleItalic: "Pipeline",
+    body: "Every buyer with a budget above AED 2M is automatically flagged as a Golden Visa candidate. Different urgency, different documents, different closing process — your agents see it instantly and can filter the entire pipeline to this segment in one click.",
+    stat: "AED 2M+",
+    statLabel: "Auto-flagged threshold",
+    img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    num: "08",
+    title: "Off-Plan Payment",
+    titleItalic: "Reminders",
+    body: "Off-plan buyers pay in installments over 2–3 years. EstateFlow tracks every milestone and WhatsApps the buyer 7 days before each one is due — with the exact amount and bank details. Missed payments cost penalties and trust. This automation prevents both.",
+    stat: "7 days",
+    statLabel: "Advanced installment alert",
+    img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    num: "09",
+    title: "Lease Renewal",
+    titleItalic: "Automation",
+    body: "90 days before a lease expires, your tenant gets a WhatsApp asking if they want to renew — and your agent gets an in-app alert. The average UAE agent manages 30+ units. Without automation, at least 20% of renewals are missed every year.",
+    stat: "90 days",
+    statLabel: "Early renewal window",
+    img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    num: "10",
+    title: "Lead Re-engagement",
+    titleItalic: "& Referrals",
+    body: "Every Monday, EstateFlow finds leads that went cold 60+ days ago and sends them a personalised WhatsApp referencing their original requirement. 30 days after every closed deal, your happy client automatically gets a referral ask. The UAE's best lead source is a client who already trusts you.",
+    stat: "60 days",
+    statLabel: "Cold lead re-engaged",
+    img: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80",
+  },
 ];
 
 export default function Features() {
@@ -110,7 +146,7 @@ export default function Features() {
             transition={{ delay: 0.2 }}
             className="text-sm text-[var(--foreground-muted)] max-w-xs leading-relaxed sm:text-right"
           >
-            Not just a CRM — a full AI engine built for how UAE real estate teams actually work.
+            Not just a CRM — a full AI engine with 10 automations built for how UAE real estate teams actually work.
           </motion.p>
         </div>
 
