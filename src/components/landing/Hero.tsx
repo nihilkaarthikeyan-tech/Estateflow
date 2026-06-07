@@ -136,6 +136,10 @@ export default function Hero() {
             className="inline-flex items-center justify-center px-9 py-3.5 rounded-full border border-white/40 text-white text-[11px] font-semibold uppercase tracking-[0.14em] hover:border-white hover:bg-white/10 transition-colors duration-200">
             See How It Works
           </a>
+          <Link href="/submit-lead"
+            className="inline-flex items-center justify-center px-9 py-3.5 rounded-full border border-white/20 text-white/70 text-[11px] font-semibold uppercase tracking-[0.14em] hover:border-white/50 hover:text-white transition-colors duration-200">
+            Submit Requirement
+          </Link>
 
           <div className="hidden sm:block w-px h-8 bg-white/20" />
           <div className="flex items-center gap-5 text-[11px] text-white/50 uppercase tracking-[0.1em]">
