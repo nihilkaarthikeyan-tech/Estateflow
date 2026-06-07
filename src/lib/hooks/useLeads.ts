@@ -67,8 +67,25 @@ export function useLeads() {
       .select()
       .single();
 
-    if (!error) setLeads((prev) => [data as Lead, ...prev]);
-    return { data, error: error?.message };
+    if (error) return { data, error: error.message };
+
+    // Enrich just like a web/WhatsApp lead: AI summary + Golden Visa flag +
+    // first-touch follow-up. Best-effort — a failure must never block the add.
+    let lead = data as Lead;
+    try {
+      const res = await fetch("/api/leads/enrich", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId: lead.id }),
+      });
+      if (res.ok) {
+        const { lead: enriched } = await res.json();
+        if (enriched) lead = enriched as Lead;
+      }
+    } catch { /* enrichment is best-effort */ }
+
+    setLeads((prev) => [lead, ...prev]);
+    return { data: lead, error: undefined };
   }
 
   async function updateLead(id: string, payload: Partial<Lead>) {

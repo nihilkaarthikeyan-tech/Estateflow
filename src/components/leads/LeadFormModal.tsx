@@ -40,6 +40,8 @@ const stageOptions = [
 ];
 
 const sourceOptions = [
+  { label: "Phone Call", value: "phone_call" },
+  { label: "Walk-in", value: "walk_in" },
   { label: "Web Form", value: "web_form" },
   { label: "WhatsApp", value: "whatsapp" },
   { label: "Referral", value: "referral" },
