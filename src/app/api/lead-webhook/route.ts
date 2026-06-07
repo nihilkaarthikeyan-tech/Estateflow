@@ -9,9 +9,10 @@ const SYSTEM_PROMPT = `You are a real estate lead analyst. Extract structured in
 
 Return ONLY valid JSON with exactly these fields:
 - summary: A concise, professional one-sentence summary of the customer's requirement
-- budget: The budget mentioned (e.g. "₹90 Lakhs", "2 Crore") or null if not mentioned
-- location: The preferred city or area or null
-- property_type: The type of property (e.g. "3BHK Apartment", "Villa") or null
+- budget: The budget mentioned (e.g. "AED 2.5M", "AED 1.6 Million") or null if not mentioned
+- budget_aed: The budget as a plain AED number (e.g. 2500000) or null if no budget is mentioned. Convert any units (M/million, K) to a full number.
+- location: The preferred city or area (e.g. "Dubai Marina", "Arabian Ranches") or null
+- property_type: The type of property (e.g. "2BHK Apartment", "Villa", "Off-plan") or null
 - urgency: One of "high", "medium", or "low" based on language urgency cues
 - buyer_intent: One of "serious", "researching", or "comparing" based on commitment signals`;
 
@@ -100,6 +101,12 @@ export async function POST(req: NextRequest) {
         extractedPropertyType = extracted.property_type ?? null;
         extractedLocation     = extracted.location ?? null;
 
+        // UAE Golden Visa property threshold is AED 2M — auto-flag qualifying buyers
+        const budgetAed = typeof extracted.budget_aed === "number"
+          ? extracted.budget_aed
+          : Number(extracted.budget_aed);
+        const goldenVisa = Number.isFinite(budgetAed) && budgetAed >= 2_000_000;
+
         Object.assign(leadPayload, {
           summary:      extractedSummary,
           budget:       extracted.budget ?? null,
@@ -107,6 +114,7 @@ export async function POST(req: NextRequest) {
           property_type: extractedPropertyType,
           urgency:      validUrgency.includes(extracted.urgency) ? extracted.urgency : "medium",
           buyer_intent: validIntent.includes(extracted.buyer_intent) ? extracted.buyer_intent : "researching",
+          golden_visa:  goldenVisa,
           ai_analyzed:  true,
         });
       } catch {
@@ -152,7 +160,7 @@ export async function POST(req: NextRequest) {
           const { data: props } = await propQuery;
           if (props && props.length > 0) {
             const top3     = props.slice(0, 3);
-            const matchMsg = `🏠 Top matching properties for your requirement:\n${top3.map((p, i) => `${i + 1}. ${p.title} — ₹${Number(p.price).toLocaleString("en-IN")} (${p.city ?? p.location})`).join("\n")}`;
+            const matchMsg = `🏠 Top matching properties for your requirement:\n${top3.map((p, i) => `${i + 1}. ${p.title} — AED ${Number(p.price).toLocaleString("en-AE")} (${p.city ?? p.location})`).join("\n")}`;
             await supabase.from("conversations").insert({ lead_id: lead.id, message: matchMsg, direction: "outbound" });
           }
         } catch { /* silent */ }
