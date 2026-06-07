@@ -8,6 +8,7 @@ import DashboardPreview from "@/components/landing/DashboardPreview";
 import RevenueOutcome  from "@/components/landing/RevenueOutcome";
 import PortalIntegrations from "@/components/landing/PortalIntegrations";
 import AIWorkflow     from "@/components/landing/AIWorkflow";
+import RoiCalculator  from "@/components/landing/RoiCalculator";
 import DayInLife      from "@/components/landing/DayInLife";
 import InvestorOffPlan from "@/components/landing/InvestorOffPlan";
 import Testimonials   from "@/components/landing/Testimonials";
@@ -46,6 +47,7 @@ export default function LandingPage() {
             <DashboardPreview />
             <PortalIntegrations />
             <AIWorkflow />
+            <RoiCalculator />
             <DayInLife />
             <InvestorOffPlan />
             <Testimonials />
